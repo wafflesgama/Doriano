@@ -59,7 +59,7 @@ public class PlayerMovementController : MonoBehaviour
     Vector3 playerSpeed = Vector3.zero;
     Vector3 playerStartingPos;
 
-    bool isSprinting, isCheckingLand, isTurningLocked, isMovementLocked, jumpBuffer;
+    bool isSprinting, isCheckingLand, isTurningLocked, isMovementLocked, jumpBuffer, isFrozen;
     int jumpTickCounter = 0;
 
     public void LockTurning(bool locked = true) => isTurningLocked = locked;
@@ -77,14 +77,17 @@ public class PlayerMovementController : MonoBehaviour
         groundNormal = Vector3.up;
         inputManager.input_jump.Onpressed += StartJumpBuffer;
         characterController = GetComponent<CharacterController>();
-        Chest.OnChestOpened += () => isMovementLocked = true;
-        Chest.OnChestItemShow += (x,y,z) => isMovementLocked = false;
+        Chest.OnChestOpened += () => isFrozen = true;
+        Chest.OnChestItemShow += (x,y,z) => isFrozen = false;
         aimController.OnLockTarget += () => isInLockState = true;
         aimController.OnUnlockTarget += () => isInLockState = false;
-        PlayerCutsceneManager.OnIntroFinished+=  () => isMovementLocked = false;
+        PlayerCutsceneManager.OnIntroStarted+=  () => isFrozen = true;
+        PlayerCutsceneManager.OnIntroFinished+=  () => isFrozen = false;
+        UIManager.OnStartedDialogue+=  (x,y) => isFrozen = true;
+        UIManager.OnFinishedDialogue+=  () => isFrozen = false;
         GameManager.OnPlayerReset += ResetPlayerPos;
 
-        if (PlayerCutsceneManager.isIntroEnabled) isMovementLocked = true;   
+        if (PlayerCutsceneManager.isIntroEnabled) isFrozen = true;   
     }
 
     private void OnDestroy()
@@ -92,14 +95,19 @@ public class PlayerMovementController : MonoBehaviour
         inputManager.input_jump.Onpressed -= StartJumpBuffer;
         aimController.OnLockTarget -= () => isInLockState = true;
         aimController.OnUnlockTarget -= () => isInLockState = false;
-        Chest.OnChestOpened -= () => isMovementLocked = true;
-        Chest.OnChestItemShow -= (x, y, z) => isMovementLocked = false;
-        PlayerCutsceneManager.OnIntroFinished+=  () => isMovementLocked = false;
+        Chest.OnChestOpened -= () => isFrozen = true;
+        Chest.OnChestItemShow -= (x, y, z) => isFrozen = false;
+        PlayerCutsceneManager.OnIntroStarted-=  () => isFrozen = true;
+        PlayerCutsceneManager.OnIntroFinished -= () => isFrozen = false;
         GameManager.OnPlayerReset -= ResetPlayerPos;
+        UIManager.OnStartedDialogue -= (x, y) => isFrozen = true;
+        UIManager.OnFinishedDialogue -= () => isFrozen = false;
     }
 
     void Update()
     {
+        if (isFrozen) return;
+
         GetGroundNormal();
         CalculateDirection();
         CheckIfJumpLanded();

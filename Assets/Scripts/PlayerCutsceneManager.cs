@@ -8,6 +8,7 @@ using UnityEngine.Playables;
 public class PlayerCutsceneManager : MonoBehaviour
 {
     public static Action OnIntroFinished;
+    public static Action OnIntroStarted;
     public static bool isIntroEnabled;
 
     PlayableDirector director;
@@ -29,15 +30,10 @@ public class PlayerCutsceneManager : MonoBehaviour
         GameManager.OnPlayerReset -= HandlePlayerReset;
     }
 
-    void Update()
-    {
-        
-    }
-
 
     public void IntroStarted()
     {
-        OnIntroFinished?.Invoke();
+        OnIntroStarted?.Invoke();
     }
     public void IntroFinished()
     {
