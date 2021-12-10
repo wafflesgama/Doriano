@@ -68,6 +68,7 @@ public class DialogueWriter : MonoBehaviour
         for (int visibleCount = 0; visibleCount < totalVisibleCharacters+1; visibleCount++)
         {
             textComponent.ForceMeshUpdate();
+            PlayerSoundManager.currentManager.PlayDialogueTypeSound();
             textComponent.maxVisibleCharacters = visibleCount;
             await Task.Delay(writingDelay);
         }
