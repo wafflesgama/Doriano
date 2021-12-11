@@ -11,6 +11,7 @@ public class AttackController : MonoBehaviour
     [SerializeField] private PlayerMovementController movementController;
     [SerializeField] private int ComboSize;
     [SerializeField] public float ComboRestoreTime;
+    [SerializeField] public bool canRestoreCombo;
 
     public event AttackAction OnAttack;
     public int ComboIndex { get; private set; }
@@ -21,7 +22,8 @@ public class AttackController : MonoBehaviour
     public void IncrementComboIndex() => ComboIndex = ComboIndex >= ComboSize ? 1 : ComboIndex + 1;
 
     // [HideInInspector]
-    public bool canRestoreAttackCombo, canIncrementAttack, isAttacking;
+    [Header("Exposed Variables")]
+    public bool restoreAttackCombo, canIncrementAttack, isAttacking;
 
     Coroutine resetAttackComboRoutine;
 
@@ -48,15 +50,17 @@ public class AttackController : MonoBehaviour
         movementController.LockMovement(false);
         movementController.LockTurning(false);
         if (resetAttackComboRoutine != null) StopCoroutine(resetAttackComboRoutine);
-        resetAttackComboRoutine = StartCoroutine(ResetAttack());
+
+        if (canRestoreCombo)
+            resetAttackComboRoutine = StartCoroutine(ResetAttack());
     }
 
     IEnumerator ResetAttack()
     {
-        canRestoreAttackCombo = true;
+        restoreAttackCombo = true;
         yield return new WaitForSeconds(ComboRestoreTime);
         //Debug.LogError("ResetAttack -> canRestoreAttackCombo");
-        canRestoreAttackCombo = false;
+        restoreAttackCombo = false;
     }
 
     void Attack()
@@ -68,7 +72,7 @@ public class AttackController : MonoBehaviour
             return;
         }
         canIncrementAttack = false;
-        if (!isAttacking && !canRestoreAttackCombo)
+        if (!isAttacking && !restoreAttackCombo)
         {
 
             //Debug.LogError("ResetComboIndex");
@@ -81,7 +85,7 @@ public class AttackController : MonoBehaviour
 
         movementController.LockMovement();
         movementController.LockTurning();
-        OnAttack?.Invoke(ComboIndex, !isAttacking && ComboIndex > 1 && canRestoreAttackCombo);
+        OnAttack?.Invoke(ComboIndex, !isAttacking && ComboIndex > 1 && restoreAttackCombo);
         isAttacking = true;
     }
 

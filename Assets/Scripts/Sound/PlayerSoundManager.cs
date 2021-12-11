@@ -18,6 +18,12 @@ public class PlayerSoundManager : MonoBehaviour
     public PlayerMovementController playerMovementController;
     public CheckTerrainTextures checkTerrainTextures;
 
+    [Header("Interaction Sounds")]
+    public Sound interactInSound;
+    public Sound interactOutSound;
+    public Sound chestOpenSound;
+    public Sound[] hitSounds;
+
     [Header("Dialogue Sounds")]
     public int numOfSkips = 1;
     public Sound dialogueTypeSound;
@@ -41,6 +47,10 @@ public class PlayerSoundManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         playerMovementController.onJumped += PlayJumpSound;
         playerMovementController.onLanded += PlayLandSound;
+        InteractionHandler.OnInteractableAppeared += (x) => PlaySound(interactInSound);
+        InteractionHandler.OnInteractableDisappeared += () => PlaySound(interactOutSound);
+        PlayerDamageHandler.OnHit+= (x) => PlaySound(PickRandomClip(hitSounds));
+        Chest.OnChestOpened += () => PlaySound(chestOpenSound);
     }
 
     private void OnDestroy()
@@ -50,6 +60,10 @@ public class PlayerSoundManager : MonoBehaviour
 
         playerMovementController.onJumped -= PlayJumpSound;
         playerMovementController.onLanded -= PlayLandSound;
+        InteractionHandler.OnInteractableAppeared -= (x) => PlaySound(interactInSound);
+        InteractionHandler.OnInteractableDisappeared -= () => PlaySound(interactOutSound);
+        Chest.OnChestOpened -= () => PlaySound(chestOpenSound);
+        PlayerDamageHandler.OnHit-= (x) => PlaySound(PickRandomClip(hitSounds));
     }
 
     void Start()
@@ -57,11 +71,7 @@ public class PlayerSoundManager : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+  
 
 
     public void PlayFootStep()

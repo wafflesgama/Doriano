@@ -106,8 +106,11 @@ public class PlayerMovementController : MonoBehaviour
 
     void Update()
     {
-        if (isFrozen) return;
-
+        if (isFrozen)
+        {
+            characterController.Move(Vector3.down*0.1f);
+            return;
+        }
         GetGroundNormal();
         CalculateDirection();
         CheckIfJumpLanded();
@@ -243,7 +246,7 @@ public class PlayerMovementController : MonoBehaviour
 
     async void InitiateJump()
     {
-        if (!jumpBuffer || !characterController.isGrounded) return;
+        if (!jumpBuffer || groundDistance > minGroundDistace) return;
 
 
         jumpBuffer = false;
@@ -259,7 +262,7 @@ public class PlayerMovementController : MonoBehaviour
 
     void CheckIfJumpLanded()
     {
-        if (!isCheckingLand || !characterController.isGrounded) return;
+        if (!isCheckingLand || groundDistance > minGroundDistace) return;
 
         isCheckingLand = false;
         LockMovement(false);
