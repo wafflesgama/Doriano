@@ -56,13 +56,12 @@ public class UIManager : MonoBehaviour
     int lockArrowShowing = -1;
     bool isInDialogue;
 
-    private void Awake()
-    {
-        fadeAnimator.gameObject.SetActive(true);
-    }
 
     void Start()
     {
+        fadeAnimator.gameObject.SetActive(true);
+        OnFadeScreen?.Invoke(fadeIn:true);
+
         aimController.OnLockTarget += ShowArrow;
         aimController.OnUnlockTarget += HideArrow;
         Chest.OnChestItemShow += ShowItem;

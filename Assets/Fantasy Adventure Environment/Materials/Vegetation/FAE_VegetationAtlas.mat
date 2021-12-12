@@ -124,10 +124,10 @@ Material:
     - _Height: 0
     - _HeightmapInfluence: 0
     - _Keyword0: 0
-    - _LeafFlutter: 0.018
+    - _LeafFlutter: 0.195
     - _MaskClipValue: 0.5
     - _MaxHeight: 0
-    - _MaxWindStrength: 0.235
+    - _MaxWindStrength: 0.443
     - _Metallic: 0
     - _MinHeight: -0.5
     - _Mode: 1

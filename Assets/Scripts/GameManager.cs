@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
     {
         OnExitScreen?.Invoke();
         await Task.Delay(700);
-        SceneManager.LoadSceneAsync("Main Menu");
+        SceneManager.LoadSceneAsync("MainMenu");
     }
 
     public async void ExitGame()

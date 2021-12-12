@@ -266,7 +266,7 @@ public class PlayerMovementController : MonoBehaviour
 
     void CheckIfJumpLanded()
     {
-        if (!isCheckingLand || groundDistance > minGroundDistace) return;
+        if (!isCheckingLand || groundDistance > minGroundDistace || !characterController.isGrounded) return;
 
         isCheckingLand = false;
         LockMovement(false);

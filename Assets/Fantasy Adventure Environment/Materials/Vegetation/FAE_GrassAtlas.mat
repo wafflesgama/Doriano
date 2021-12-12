@@ -133,8 +133,8 @@ Material:
     - WindSpeed: 0.3
     - _AO: 0
     - _ASEOutlineWidth: 0
-    - _AmbientOcclusion: 0.275
-    - _BendingInfluence: 1
+    - _AmbientOcclusion: 0.135
+    - _BendingInfluence: 0.685
     - _BendingRadius: 1.5
     - _BendingStiffness: 1
     - _BendingStrength: 20
@@ -144,7 +144,7 @@ Material:
     - _BumpScale: 1
     - _ColorVariation: 0.117
     - _Colorvariation: 0.729
-    - _Cutoff: 0.11
+    - _Cutoff: 0.325
     - _Debug: 0
     - _DetailNormalMapScale: 1
     - _Detailstrength: 1
@@ -155,16 +155,16 @@ Material:
     - _Float2: 1
     - _Float3: 0
     - _Float8: 0.406
-    - _GlobalWindMotion: 0.883
+    - _GlobalWindMotion: 0.897
     - _Globaltiling: 1.56
     - _Glossiness: 0.5
     - _Height: 0
     - _HeightmapInfluence: 0
-    - _LeafFlutter: 0.5
+    - _LeafFlutter: 0.657
     - _MaskClipValue: 0.5
     - _MaxFlattening: 0.469
     - _MaxHeight: 0.29
-    - _MaxWindStrength: 0.06
+    - _MaxWindStrength: 0.127
     - _Metallic: 0
     - _MinHeight: -1
     - _Mode: 1
@@ -184,8 +184,8 @@ Material:
     - _TerrainOffsetX: 394.7
     - _TerrainOffsetY: 250
     - _TerrainSize: 500
-    - _TransmissionAmount: 3.96
-    - _TransmissionSize: 5.11
+    - _TransmissionAmount: 8.28
+    - _TransmissionSize: 11.03
     - _Transmissionsize: 0
     - _UVSec: 0
     - _Uselightcolor: 0
@@ -206,7 +206,7 @@ Material:
     - ObstaclePosition: {r: 0, g: 0, b: 0, a: 0}
     - WindDirection: {r: 0, g: 0, b: 1, a: 0}
     - _ASEOutlineColor: {r: 0, g: 0, b: 0, a: 0}
-    - _Color: {r: 0.33254564, g: 0.6037736, b: 0.064934105, a: 1}
+    - _Color: {r: 0.32463723, g: 0.5849056, b: 0.11256669, a: 0.91764706}
     - _ColorBottom: {r: 0.25492513, g: 0.5147059, b: 0, a: 1}
     - _ColorTop: {r: 0.31585774, g: 0.6102941, b: 0.02692473, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

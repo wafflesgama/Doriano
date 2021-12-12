@@ -45,6 +45,7 @@ public class PlayerSoundManager : MonoBehaviour
         typeSkipCounter = 0;
         currentManager = this;
         audioSource = GetComponent<AudioSource>();
+
         playerMovementController.onJumped += PlayJumpSound;
         playerMovementController.onLanded += PlayLandSound;
         InteractionHandler.OnInteractableAppeared += (x) => PlaySound(interactInSound);
@@ -63,16 +64,10 @@ public class PlayerSoundManager : MonoBehaviour
         playerMovementController.onLanded -= PlayLandSound;
         InteractionHandler.OnInteractableAppeared -= (x) => PlaySound(interactInSound);
         InteractionHandler.OnInteractableDisappeared -= () => PlaySound(interactOutSound);
-        Chest.OnChestOpened -= () => PlaySound(chestOpenSound);
         PlayerDamageHandler.OnHit -= (x) => PlaySound(PickRandomClip(hitSounds));
+        Chest.OnChestOpened -= () => PlaySound(chestOpenSound);
         UIManager.OnFadeScreen -= PlayFadeSound;
     }
-
-    void Start()
-    {
-
-    }
-
 
 
 

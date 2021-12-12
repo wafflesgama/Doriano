@@ -19,6 +19,10 @@ public class PlayerDamageHandler : MonoBehaviour
         //triggerLockCounter = 0;
         attackController.OnAttack += AttackController_OnAttack;
     }
+    private void OnDestroy()
+    {
+        attackController.OnAttack -= AttackController_OnAttack;
+    }
 
     private async void AttackController_OnAttack(int lvl, bool isRestoringCombo)
     {
