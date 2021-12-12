@@ -14,7 +14,7 @@ public class InputManager : MonoBehaviour
     public Button<float> input_lockView = new Button<float>();
     public Button<float> input_attack = new Button<float>();
     public Button<float> input_equipWeapon = new Button<float>();
-    public Button<float> input_newAction1 = new Button<float>();
+    public Button<float> input_pause = new Button<float>();
 
     #region Button Base stuff
     public delegate void ClickAction();
@@ -61,7 +61,6 @@ public class InputManager : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
     }
 
-
     private void OnMove(InputValue inputValue) => SetInputInfo(input_move, inputValue);
     private void OnLook(InputValue inputValue) => SetInputInfo(input_look, inputValue);
     private void OnJump(InputValue inputValue) => SetInputInfo(input_jump, inputValue);
@@ -69,10 +68,7 @@ public class InputManager : MonoBehaviour
     private void OnLockView(InputValue inputValue) => SetInputInfo(input_lockView, inputValue);
     private void OnAttack(InputValue inputValue) => SetInputInfo(input_attack, inputValue);
     private void OnEquipWeapon(InputValue inputValue) => SetInputInfo(input_equipWeapon, inputValue);
-    private void OnNewaction1(InputValue inputValue) => SetInputInfo(input_newAction1, inputValue);
-
-
-
+    private void OnPause(InputValue inputValue) => SetInputInfo(input_pause, inputValue);
 
 
     #region Info Setters

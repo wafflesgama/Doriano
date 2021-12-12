@@ -19,7 +19,7 @@ MonoBehaviour:
     m_Value: {fileID: 2800000, guid: 4c9f56cd9eb24d4429faa51c9878b4cb, type: 3}
   contribution:
     m_OverrideState: 1
-    m_Value: 0.51
+    m_Value: 0.853
     min: 0
     max: 1
 --- !u!114 &-4564957921202143632
@@ -38,7 +38,7 @@ MonoBehaviour:
   m_AdvancedMode: 0
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 0.977412, y: 1, z: 0.71084535, w: 0}
+    m_Value: {x: 0.977412, y: 1, z: 0.71084535, w: -0.21472389}
   midtones:
     m_OverrideState: 1
     m_Value: {x: 0.9491397, y: 1, z: 0.9396394, w: 0}
@@ -191,7 +191,7 @@ MonoBehaviour:
     min: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 2.55
+    m_Value: 0.47
     min: 0
   scatter:
     m_OverrideState: 1

@@ -9,9 +9,12 @@ using System;
 
 public class UIManager : MonoBehaviour
 {
-    public delegate void DialogueAction(Transform narrator,string[] messages);
+    public delegate void DialogueAction(Transform narrator, string[] messages);
+    public delegate void FadeScreenAction(bool fadeIn);
+
     public static DialogueAction OnStartedDialogue;
     public static Action OnFinishedDialogue;
+    public static FadeScreenAction OnFadeScreen;
 
     public AimController aimController;
     public InputManager inputManager;
@@ -32,12 +35,12 @@ public class UIManager : MonoBehaviour
 
     [Header("Interactable")]
     public TextMeshProUGUI interactableText;
-    public float showInteractAnimDuration=.5f;
+    public float showInteractAnimDuration = .5f;
     public Ease showInteractEase;
 
     [Header("Item Showcase")]
-    public int messageDurationMs=2500;
-    public float inAnimDuration=1;
+    public int messageDurationMs = 2500;
+    public float inAnimDuration = 1;
     public Ease inAnimEase;
     public Ease outAnimEase;
     public RectTransform itemContainer;
@@ -45,6 +48,10 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI itemTitle;
     public TextMeshProUGUI itemDescription;
 
+    [Header("Pause Menu")]
+    public CanvasGroup pauseGroup;
+    public UnityEngine.EventSystems.EventSystem eventSystem;
+    public float pauseAnimDuration = .15f;
 
     int lockArrowShowing = -1;
     bool isInDialogue;
@@ -63,8 +70,10 @@ public class UIManager : MonoBehaviour
         InteractionHandler.OnInteractableDisappeared += HideInteractable;
         OnStartedDialogue += RegisterDialogue;
         inputManager.input_attack.Onpressed += TryNextMessage;
-        GameManager.OnLevelRestart += () => FadeScreen(fadeIn: false);
-        GameManager.OnPlayerReset += ResetPlayerUI;
+        GameManager.OnExitScreen += () => FadeScreen(fadeIn: false);
+        GameManager.OnPlayerReset += FadeInOutScreen;
+        PauseHandler.OnPause += () => FadePauseMenu(fadeIn: true);
+        PauseHandler.OnUnpause += () => FadePauseMenu(fadeIn: false);
 
     }
 
@@ -78,8 +87,10 @@ public class UIManager : MonoBehaviour
         InteractionHandler.OnInteractableDisappeared -= HideInteractable;
         OnStartedDialogue -= RegisterDialogue;
         inputManager.input_attack.Onpressed -= TryNextMessage;
-        GameManager.OnLevelRestart -= () => FadeScreen(fadeIn: false);
-        GameManager.OnPlayerReset -= ResetPlayerUI;
+        GameManager.OnExitScreen -= () => FadeScreen(fadeIn: false);
+        GameManager.OnPlayerReset -= FadeInOutScreen;
+        PauseHandler.OnPause -= () => FadePauseMenu(fadeIn: true);
+        PauseHandler.OnUnpause -= () => FadePauseMenu(fadeIn: false);
     }
 
 
@@ -100,9 +111,13 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    
 
-    private void FadeScreen(bool fadeIn) => fadeAnimator.SetBool("FadeIn", fadeIn);
+
+    private void FadeScreen(bool fadeIn)
+    {
+        OnFadeScreen?.Invoke(fadeIn);
+        fadeAnimator.SetBool("FadeIn", fadeIn);
+    }
 
 
     private void ShowArrow()
@@ -143,10 +158,10 @@ public class UIManager : MonoBehaviour
 
     }
 
-    private async void RegisterDialogue(Transform t,string[] dialogue)
+    private async void RegisterDialogue(Transform t, string[] dialogue)
     {
         dialogueContainer.DOScale(1, dialogueAnimDuration).SetEase(dialogueInEase);
-        await Task.Delay((int)dialogueAnimDuration*1000/2);
+        await Task.Delay((int)dialogueAnimDuration * 1000 / 2);
         dialogueWriter.RegisterMessages(dialogue);
         NextMessage();
         await Task.Delay(500);
@@ -169,11 +184,21 @@ public class UIManager : MonoBehaviour
     private bool NextMessage() => dialogueWriter.WriteNextMessage();
 
 
-    private async void ResetPlayerUI()
+    private async void FadeInOutScreen()
     {
         FadeScreen(false);
         await Task.Delay(GameManager.currentGameManager.resetFreezeDurationMs);
         FadeScreen(true);
+    }
+
+    private void FadePauseMenu(bool fadeIn)
+    {
+        if (fadeIn)
+            eventSystem.SetSelectedGameObject(null);
+
+        pauseGroup.interactable = fadeIn;
+        pauseGroup.blocksRaycasts = fadeIn;
+        pauseGroup.DOFade(fadeIn ? 1 : 0, pauseAnimDuration).SetEase(fadeIn ? Ease.OutQuart : Ease.InQuart);
     }
 
 

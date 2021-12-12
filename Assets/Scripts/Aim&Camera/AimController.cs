@@ -18,8 +18,10 @@ public class AimController : MonoBehaviour
     public float xSensitivity = 1;
     public float ySensitivity = 1;
 
-
+    [Header("Exposed Variables")]
     public LockableObject currentLockedObj;
+
+    bool isAimFrozen;
 
     void Start()
     {
@@ -28,12 +30,16 @@ public class AimController : MonoBehaviour
 
         inputManager.input_lockView.Onpressed += TryLock;
         inputManager.input_lockView.Onreleased += TryUnlock;
+        PauseHandler.OnPause += () => PauseHandle(pause: true);
+        PauseHandler.OnUnpause += () => PauseHandle(pause: false);
     }
 
     private void OnDestroy()
     {
         inputManager.input_lockView.Onpressed -= TryLock;
         inputManager.input_lockView.Onreleased -= TryUnlock;
+        PauseHandler.OnPause -= () => PauseHandle(pause: true);
+        PauseHandler.OnUnpause -= () => PauseHandle(pause: false);
     }
 
 
@@ -55,8 +61,17 @@ public class AimController : MonoBehaviour
         OnUnlockTarget.Invoke();
     }
 
+    void PauseHandle(bool pause)
+    {
+        isAimFrozen = pause;
+        Cursor.visible = pause;
+        Cursor.lockState = !pause ? CursorLockMode.Locked : CursorLockMode.None;
+    }
+
     void Update()
     {
+        if (isAimFrozen) return;
+
         if (currentLockedObj != null)
         {
             aimTarget.rotation = Quaternion.LookRotation(currentLockedObj.transform.position - aimTarget.position);

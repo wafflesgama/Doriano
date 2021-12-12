@@ -49,7 +49,7 @@ public class PlayerDamageHandler : MonoBehaviour
         var colliders = Physics.OverlapBox(transform.position, transform.localScale);
         foreach (var collider in colliders)
         {
-            if (collider.tag == "Player") continue;
+            if (collider.tag == "Player" || collider.isTrigger) continue;
 
             var point = collider.ClosestPoint(transform.position);
             OnHit?.Invoke(point);

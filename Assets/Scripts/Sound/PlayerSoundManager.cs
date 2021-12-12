@@ -49,8 +49,9 @@ public class PlayerSoundManager : MonoBehaviour
         playerMovementController.onLanded += PlayLandSound;
         InteractionHandler.OnInteractableAppeared += (x) => PlaySound(interactInSound);
         InteractionHandler.OnInteractableDisappeared += () => PlaySound(interactOutSound);
-        PlayerDamageHandler.OnHit+= (x) => PlaySound(PickRandomClip(hitSounds));
+        PlayerDamageHandler.OnHit += (x) => PlaySound(PickRandomClip(hitSounds));
         Chest.OnChestOpened += () => PlaySound(chestOpenSound);
+        UIManager.OnFadeScreen += PlayFadeSound;
     }
 
     private void OnDestroy()
@@ -63,7 +64,8 @@ public class PlayerSoundManager : MonoBehaviour
         InteractionHandler.OnInteractableAppeared -= (x) => PlaySound(interactInSound);
         InteractionHandler.OnInteractableDisappeared -= () => PlaySound(interactOutSound);
         Chest.OnChestOpened -= () => PlaySound(chestOpenSound);
-        PlayerDamageHandler.OnHit-= (x) => PlaySound(PickRandomClip(hitSounds));
+        PlayerDamageHandler.OnHit -= (x) => PlaySound(PickRandomClip(hitSounds));
+        UIManager.OnFadeScreen -= PlayFadeSound;
     }
 
     void Start()
@@ -71,7 +73,7 @@ public class PlayerSoundManager : MonoBehaviour
 
     }
 
-  
+
 
 
     public void PlayFootStep()
@@ -81,9 +83,9 @@ public class PlayerSoundManager : MonoBehaviour
 
         if (result[6] > 0)                                                                     //If terrain has some sand texture...
             PlaySoundCustomVol(PickRandomClip(sandFootstepSounds), result[6]);
-         if (result[2] > 0)                                                                //If terrain has some stone texture...
+        if (result[2] > 0)                                                                //If terrain has some stone texture...
             PlaySoundCustomVol(PickRandomClip(stoneFootstepSounds), result[2]);
-         if (result[0] > 0 || result[1] > 0 || result[4] > 0 || result[5] > 0)             //If terrain has some grass/dirt/flower/mix texture play grass footstep
+        if (result[0] > 0 || result[1] > 0 || result[4] > 0 || result[5] > 0)             //If terrain has some grass/dirt/flower/mix texture play grass footstep
         {
             var maxValue = result[0] > result[4] ? result[0] : result[4];
             maxValue = maxValue < result[1] ? result[1] : maxValue;
@@ -97,12 +99,27 @@ public class PlayerSoundManager : MonoBehaviour
     public void PlayDialogueTypeSound()
     {
         if (typeSkipCounter == 0)
-            audioSource.PlayOneShot(dialogueTypeSound.clip, dialogueTypeSound.volume);
+            PlaySound(dialogueTypeSound);
 
         typeSkipCounter++;
         if (typeSkipCounter > numOfSkips)
             typeSkipCounter = 0;
     }
+
+
+    public void PlayUIClick()
+    {
+        PlaySound(dialogueTypeSound);
+    }
+
+    private void PlayFadeSound(bool fadeIn)
+    {
+        if (fadeIn)
+            PlaySound(interactInSound);
+        else
+            PlaySound(interactOutSound);
+    }
+
 
     private void PlayJumpSound()
     {

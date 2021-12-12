@@ -88,7 +88,7 @@ Material:
     - Vector1_67814CC1: 0.1
     - Vector1_7DFD32F9: 0.13
     - Vector1_BE75C478: -13.1
-    - Vector1_E23F9E57: 0.671
+    - Vector1_E23F9E57: 0.553
     - Vector1_E796673B: 9.73
     - _BumpScale: 1
     - _Cutoff: 0.5
@@ -99,15 +99,15 @@ Material:
     - _EdgeFade: 0.264
     - _FlowSpeed: 0.79
     - _Fresnelexponent: 4
-    - _Glossiness: 0.686
+    - _Glossiness: 0.671
     - _HighlightPanning: 0
     - _Metallic: 0
-    - _Metallicness: 0.246
+    - _Metallicness: 0.419
     - _Mode: 0
     - _NormalStrength: 0.272
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RefractionAmount: 0.0991
+    - _RefractionAmount: 0.0924
     - _RimDistance: 0
     - _RimRize: 1.54
     - _RimSize: 4

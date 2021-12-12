@@ -86,6 +86,8 @@ public class PlayerMovementController : MonoBehaviour
         UIManager.OnStartedDialogue+=  (x,y) => isFrozen = true;
         UIManager.OnFinishedDialogue+=  () => isFrozen = false;
         GameManager.OnPlayerReset += ResetPlayerPos;
+        PauseHandler.OnPause += () => isFrozen = true;
+        PauseHandler.OnUnpause += () => isFrozen = false;
 
         if (PlayerCutsceneManager.isIntroEnabled) isFrozen = true;   
     }
@@ -102,6 +104,8 @@ public class PlayerMovementController : MonoBehaviour
         GameManager.OnPlayerReset -= ResetPlayerPos;
         UIManager.OnStartedDialogue -= (x, y) => isFrozen = true;
         UIManager.OnFinishedDialogue -= () => isFrozen = false;
+        PauseHandler.OnPause -= () => isFrozen = true;
+        PauseHandler.OnUnpause -= () => isFrozen = false;
     }
 
     void Update()

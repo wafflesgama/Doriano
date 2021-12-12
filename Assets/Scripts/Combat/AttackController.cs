@@ -23,19 +23,27 @@ public class AttackController : MonoBehaviour
 
     // [HideInInspector]
     [Header("Exposed Variables")]
-    public bool restoreAttackCombo, canIncrementAttack, isAttacking;
+    public bool canAttack = true;
+    public bool restoreAttackCombo;
+    public bool canIncrementAttack;
+    public bool isAttacking;
 
     Coroutine resetAttackComboRoutine;
 
     void Start()
     {
+        canAttack = true;
         canIncrementAttack = true;
         inputManager.input_attack.Onpressed += Attack;
+        PauseHandler.OnPause += () => canAttack = false;
+        PauseHandler.OnUnpause += () => canAttack = true;
     }
 
     private void OnDestroy()
     {
         inputManager.input_attack.Onpressed -= Attack;
+        PauseHandler.OnPause -= () => canAttack = false;
+        PauseHandler.OnUnpause -= () => canAttack = true;
 
     }
 
@@ -65,6 +73,8 @@ public class AttackController : MonoBehaviour
 
     void Attack()
     {
+        if (!canAttack) return;
+
         //Debug.LogError("----------------Attack");
         if (!canIncrementAttack)
         {

@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager currentGameManager;
-    public static Action OnLevelRestart;
+    public static Action OnExitScreen;
     public static Action OnPlayerReset;
 
     public int resetFreezeDurationMs=800;
@@ -39,8 +39,22 @@ public class GameManager : MonoBehaviour
         if (restarFlag) return;
         restarFlag = true;
 
-        OnLevelRestart?.Invoke();
+        OnExitScreen?.Invoke();
         await Task.Delay(700);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
+    }
+
+    public async void MainMenu()
+    {
+        OnExitScreen?.Invoke();
+        await Task.Delay(700);
+        SceneManager.LoadSceneAsync("Main Menu");
+    }
+
+    public async void ExitGame()
+    {
+        OnExitScreen?.Invoke();
+        await Task.Delay(700);
+        Application.Quit();
     }
 }
