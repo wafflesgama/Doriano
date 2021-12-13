@@ -2,26 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using static UEventHandler;
 
 public class PlayerDamageHandler : MonoBehaviour
 {
     public delegate void HitAction(Vector3 source);
-    public static event HitAction OnHit;
+    public static UEvent<Vector3> OnHit=new UEvent<Vector3>();
 
     public AttackController attackController;
     public Collider damageZoneTrigger;
     public int activationDelayMs = 300;
     //public int triggerLockCounter;
 
+    UEventHandler eventHandler = new UEventHandler();
     void Start()
     {
         //damageZoneTrigger.enabled = false;
         //triggerLockCounter = 0;
-        attackController.OnAttack += AttackController_OnAttack;
+        attackController.OnAttack.Subscribe(eventHandler, AttackController_OnAttack);
     }
     private void OnDestroy()
     {
-        attackController.OnAttack -= AttackController_OnAttack;
+        eventHandler.UnsubcribeAll();
     }
 
     private async void AttackController_OnAttack(int lvl, bool isRestoringCombo)
@@ -56,7 +58,7 @@ public class PlayerDamageHandler : MonoBehaviour
             if (collider.tag == "Player" || collider.isTrigger) continue;
 
             var point = collider.ClosestPoint(transform.position);
-            OnHit?.Invoke(point);
+            OnHit.TryInvoke(point);
 
             if (collider.tag == "Enemy")
                 collider.gameObject.GetComponent<Gump>().Hit(attackController.transform.position);
@@ -68,7 +70,7 @@ public class PlayerDamageHandler : MonoBehaviour
         if (other.tag == "Player") return;
 
         var point = other.ClosestPoint(transform.position);
-        OnHit?.Invoke(point);
+        OnHit.TryInvoke(point);
 
         if (other.tag == "Enemy")
         {

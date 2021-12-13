@@ -6,15 +6,19 @@ using DG.Tweening;
 using System.Threading.Tasks;
 using TMPro;
 using System;
+using static UEventHandler;
 
 public class UIManager : MonoBehaviour
 {
-    public delegate void DialogueAction(Transform narrator, string[] messages);
-    public delegate void FadeScreenAction(bool fadeIn);
+    //public delegate void DialogueAction(Transform narrator, string[] messages);
+    //public delegate void FadeScreenAction(bool fadeIn);
 
-    public static DialogueAction OnStartedDialogue;
-    public static Action OnFinishedDialogue;
-    public static FadeScreenAction OnFadeScreen;
+    public static UEvent<Transform, string[]> OnStartedDialogue = new UEvent<Transform, string[]>();
+    //public static DialogueAction OnStartedDialogue
+    public static UEvent OnFinishedDialogue = new UEvent();
+    //public static Action OnFinishedDialogue;
+    public static UEvent<bool> OnFadeScreen = new UEvent<bool>();
+    //public static FadeScreenAction OnFadeScreen;
 
     public AimController aimController;
     public InputManager inputManager;
@@ -53,6 +57,7 @@ public class UIManager : MonoBehaviour
     public UnityEngine.EventSystems.EventSystem eventSystem;
     public float pauseAnimDuration = .15f;
 
+    public UEventHandler eventHandler = new UEventHandler();
     int lockArrowShowing = -1;
     bool isInDialogue;
 
@@ -60,36 +65,49 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         fadeAnimator.gameObject.SetActive(true);
-        OnFadeScreen?.Invoke(fadeIn:true);
+        OnFadeScreen.TryInvoke(true);
+        //OnFadeScreen?.Invoke(fadeIn: true);
 
-        aimController.OnLockTarget += ShowArrow;
-        aimController.OnUnlockTarget += HideArrow;
-        Chest.OnChestItemShow += ShowItem;
-        InteractionHandler.OnInteractableAppeared += ShowInteractable;
-        InteractionHandler.OnInteractableDisappeared += HideInteractable;
-        OnStartedDialogue += RegisterDialogue;
-        inputManager.input_attack.Onpressed += TryNextMessage;
-        GameManager.OnExitScreen += () => FadeScreen(fadeIn: false);
-        GameManager.OnPlayerReset += FadeInOutScreen;
-        PauseHandler.OnPause += () => FadePauseMenu(fadeIn: true);
-        PauseHandler.OnUnpause += () => FadePauseMenu(fadeIn: false);
+        aimController.OnLockTarget.Subscribe(eventHandler, ShowArrow);
+        //aimController.OnLockTarget += ShowArrow;
+        aimController.OnUnlockTarget.Subscribe(eventHandler, HideArrow);
+        //aimController.OnUnlockTarget += HideArrow;
+        Chest.OnChestItemShow.Subscribe(eventHandler, ShowItem);
+        //Chest.OnChestItemShow += ShowItem;
+        InteractionHandler.OnInteractableAppeared.Subscribe(eventHandler, ShowInteractable);
+        //InteractionHandler.OnInteractableAppeared += ShowInteractable;
+        InteractionHandler.OnInteractableDisappeared.Subscribe(eventHandler, HideInteractable);
+        //InteractionHandler.OnInteractableDisappeared += HideInteractable;
+        OnStartedDialogue.Subscribe(eventHandler, RegisterDialogue);
+        //OnStartedDialogue += RegisterDialogue;
+        inputManager.input_attack.Onpressed.Subscribe(eventHandler, TryNextMessage);
+        //inputManager.input_attack.Onpressed += TryNextMessage;
+        GameManager.OnExitScreen.Subscribe(eventHandler, () => FadeScreen(fadeIn: false));
+        //GameManager.OnExitScreen += () => FadeScreen(fadeIn: false);
+        GameManager.OnPlayerReset.Subscribe(eventHandler, FadeInOutScreen);
+        //GameManager.OnPlayerReset += FadeInOutScreen;
+        PauseHandler.OnPause.Subscribe(eventHandler, () => FadePauseMenu(fadeIn: true));
+        //PauseHandler.OnPause += () => FadePauseMenu(fadeIn: true);
+        PauseHandler.OnUnpause.Subscribe(eventHandler, () => FadePauseMenu(fadeIn: false));
+        //PauseHandler.OnUnpause += () => FadePauseMenu(fadeIn: false);
 
     }
 
 
     private void OnDestroy()
     {
-        aimController.OnLockTarget -= ShowArrow;
-        aimController.OnUnlockTarget -= HideArrow;
-        Chest.OnChestItemShow -= ShowItem;
-        InteractionHandler.OnInteractableAppeared -= ShowInteractable;
-        InteractionHandler.OnInteractableDisappeared -= HideInteractable;
-        OnStartedDialogue -= RegisterDialogue;
-        inputManager.input_attack.Onpressed -= TryNextMessage;
-        GameManager.OnExitScreen -= () => FadeScreen(fadeIn: false);
-        GameManager.OnPlayerReset -= FadeInOutScreen;
-        PauseHandler.OnPause -= () => FadePauseMenu(fadeIn: true);
-        PauseHandler.OnUnpause -= () => FadePauseMenu(fadeIn: false);
+        eventHandler.UnsubcribeAll();
+        //aimController.OnLockTarget -= ShowArrow;
+        //aimController.OnUnlockTarget -= HideArrow;
+        //Chest.OnChestItemShow -= ShowItem;
+        //InteractionHandler.OnInteractableAppeared -= ShowInteractable;
+        //InteractionHandler.OnInteractableDisappeared -= HideInteractable;
+        //OnStartedDialogue -= RegisterDialogue;
+        //inputManager.input_attack.Onpressed -= TryNextMessage;
+        //GameManager.OnExitScreen -= () => FadeScreen(fadeIn: false);
+        //GameManager.OnPlayerReset -= FadeInOutScreen;
+        //PauseHandler.OnPause -= () => FadePauseMenu(fadeIn: true);
+        //PauseHandler.OnUnpause -= () => FadePauseMenu(fadeIn: false);
     }
 
 
@@ -114,7 +132,8 @@ public class UIManager : MonoBehaviour
 
     private void FadeScreen(bool fadeIn)
     {
-        OnFadeScreen?.Invoke(fadeIn);
+        OnFadeScreen.TryInvoke(fadeIn);
+        //OnFadeScreen?.Invoke(fadeIn);
         fadeAnimator.SetBool("FadeIn", fadeIn);
     }
 
@@ -176,7 +195,8 @@ public class UIManager : MonoBehaviour
         {
             isInDialogue = false;
             dialogueContainer.DOScale(0, dialogueAnimDuration).SetEase(dialogueOutEase);
-            OnFinishedDialogue?.Invoke();
+            OnFinishedDialogue.TryInvoke();
+            //OnFinishedDialogue?.Invoke();
         }
     }
 

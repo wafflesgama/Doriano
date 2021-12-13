@@ -11,6 +11,8 @@ public class WalkingParticles : MonoBehaviour
     public float particleRate = 10;
     VisualEffect visualEffect;
 
+    public UEventHandler eventHandler = new UEventHandler();
+
     float rate;
     bool followedByJump, isLanding;
 
@@ -19,14 +21,15 @@ public class WalkingParticles : MonoBehaviour
         visualEffect = GetComponent<VisualEffect>();
         visualEffect.SetFloat("Rate", 0);
 
-        movementController.onJumped += JumpParticles;
-        movementController.onLanded += LandParticles;
+        movementController.OnJumped.Subscribe(eventHandler,JumpParticles);
+        movementController.OnLanded.Subscribe(eventHandler,LandParticles);
+        //movementController.onLanded += LandParticles;
     }
 
     private void OnDestroy()
     {
-        movementController.onJumped -= JumpParticles;
-        movementController.onLanded -= LandParticles;
+        //movementController.OnJumped -= JumpParticles;
+        //movementController.onLanded -= LandParticles;
     }
 
     private async void LandParticles()

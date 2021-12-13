@@ -11,17 +11,17 @@ public class StrechnSquach : MonoBehaviour
     public PlayerMovementController playerMovementController;
     Vector3 baseScale;
     Vector3 jumpStretchDirection=new Vector3();
+    UEventHandler eventHandler = new UEventHandler();
 
     void Start()
     {
         baseScale = transform.localScale;
-        playerMovementController.onJumped += Jump_Strech;
-        playerMovementController.onLanded += Jump_Squach;
+        playerMovementController.OnJumped.Subscribe(eventHandler, Jump_Strech);
+        playerMovementController.OnLanded.Subscribe(eventHandler, Jump_Squach);
     }
     private void OnDestroy()
     {
-        playerMovementController.onJumped -= Jump_Strech;
-        playerMovementController.onLanded -= Jump_Squach;
+        eventHandler.UnsubcribeAll();
 
     }
 

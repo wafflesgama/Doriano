@@ -19,18 +19,18 @@ public class CameraController : MonoBehaviour
 
     Transform dialogueTarget;
     ViewType prevView = ViewType.Unset, currentView = ViewType.Unset;
+    UEventHandler eventHandler = new UEventHandler();
 
     void Start()
     {
         SwitchView(ViewType.MainView);
 
-        UIManager.OnStartedDialogue += StartDialogueCamera;
-        UIManager.OnFinishedDialogue += EndDialogueCamera;
+        UIManager.OnStartedDialogue.Subscribe(eventHandler, StartDialogueCamera);
+        UIManager.OnFinishedDialogue.Subscribe(eventHandler, EndDialogueCamera);
     }
     private void OnDestroy()
     {
-        UIManager.OnStartedDialogue -= StartDialogueCamera;
-        UIManager.OnFinishedDialogue -= EndDialogueCamera;
+        eventHandler.UnsubcribeAll();
 
     }
 

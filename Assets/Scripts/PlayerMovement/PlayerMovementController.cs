@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
+using static UEventHandler;
 
 public delegate void MovementAction();
 
@@ -17,21 +18,21 @@ public class PlayerMovementController : MonoBehaviour
     [Header("Basic Movement Walk/Sprint")]
     public float walkSpeed = 5;
     public float maxWalkSpeed = 15;
-    public float minGroundDistace=.1f;
+    public float minGroundDistace = .1f;
     public AnimationCurve movementSpeedCurve;
     public float sprintSpeedFactor = 5;
     public LayerMask layerMask;
-    public float castMaxDistance=5;
+    public float castMaxDistance = 5;
 
 
     [Header("Jump")]
-    public int jumpBufferMs=400;
-    public float maxJumpSpeed=3;
-    public int jumpForceTicks=1;
-    public float jumpAcceleration=7;
+    public int jumpBufferMs = 400;
+    public float maxJumpSpeed = 3;
+    public int jumpForceTicks = 1;
+    public float jumpAcceleration = 7;
 
     [Header("Character Rotation")]
-    public float lerpRotation=21;
+    public float lerpRotation = 21;
 
     [Header("Freeze Movement")]
     public float freezeDecelFactor = 0.05f;
@@ -47,10 +48,15 @@ public class PlayerMovementController : MonoBehaviour
     public Vector3 upLeanedVector { get; private set; }
     public Vector3 playerHorizontalVelocity { get; private set; }
     public bool isInLockState { get; private set; }
-    public event MovementAction onJumped;
-    public event MovementAction onLanded;
-    public event MovementAction onFalling;
+    public UEventHandler eventHandler = new UEventHandler();
 
+    public UEvent OnJumped = new UEvent();
+    public UEvent OnLanded = new UEvent();
+    public UEvent OnFalling = new UEvent();
+
+    //public event MovementAction onJumped;
+    //public event MovementAction onLanded;
+    //public event MovementAction onFalling;
 
     CharacterController characterController;
     Vector3 acceleration = Vector3.zero;
@@ -68,51 +74,65 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Awake()
     {
-        playerStartingPos=transform.position;
+        playerStartingPos = transform.position;
     }
 
     void Start()
     {
         //Time.timeScale = .5f;
         groundNormal = Vector3.up;
-        inputManager.input_jump.Onpressed += StartJumpBuffer;
+        inputManager.input_jump.Onpressed.Subscribe(eventHandler, StartJumpBuffer);
+        //inputManager.input_jump.Onpressed += StartJumpBuffer;
         characterController = GetComponent<CharacterController>();
-        Chest.OnChestOpened += () => isFrozen = true;
-        Chest.OnChestItemShow += (x,y,z) => isFrozen = false;
-        aimController.OnLockTarget += () => isInLockState = true;
-        aimController.OnUnlockTarget += () => isInLockState = false;
-        PlayerCutsceneManager.OnIntroStarted+=  () => isFrozen = true;
-        PlayerCutsceneManager.OnIntroFinished+=  () => isFrozen = false;
-        UIManager.OnStartedDialogue+=  (x,y) => isFrozen = true;
-        UIManager.OnFinishedDialogue+=  () => isFrozen = false;
-        GameManager.OnPlayerReset += ResetPlayerPos;
-        PauseHandler.OnPause += () => isFrozen = true;
-        PauseHandler.OnUnpause += () => isFrozen = false;
+        Chest.OnChestOpened.Subscribe(eventHandler, () => isFrozen = true);
+        //Chest.OnChestOpened += () => isFrozen = true;
+        Chest.OnChestItemShow.Subscribe(eventHandler, (x, y, z) => isFrozen = false);
+        //Chest.OnChestItemShow += (x, y, z) => isFrozen = false;
+        aimController.OnLockTarget.Subscribe(eventHandler, () => isInLockState = true);
+        //aimController.OnLockTarget += () => isInLockState = true;
+        aimController.OnUnlockTarget.Subscribe(eventHandler, () => isInLockState = false);
+        //aimController.OnUnlockTarget += () => isInLockState = false;
+        PlayerCutsceneManager.OnIntroStarted.Subscribe(eventHandler, () => isFrozen = true);
+        //PlayerCutsceneManager.OnIntroStarted += () => isFrozen = true;
+        PlayerCutsceneManager.OnIntroFinished.Subscribe(eventHandler, () => isFrozen = false);
+        //PlayerCutsceneManager.OnIntroFinished += () => isFrozen = false;
+        UIManager.OnStartedDialogue.Subscribe(eventHandler, (x, y) => isFrozen = true);
+        //UIManager.OnStartedDialogue += (x, y) => isFrozen = true;
+        UIManager.OnFinishedDialogue.Subscribe(eventHandler, () => isFrozen = false);
+        //UIManager.OnFinishedDialogue += () => isFrozen = false;
+        GameManager.OnPlayerReset.Subscribe(eventHandler, ResetPlayerPos);
+        //GameManager.OnPlayerReset += ResetPlayerPos;
+        PauseHandler.OnPause.Subscribe(eventHandler, () => isFrozen = true);
+        //PauseHandler.OnPause += () => isFrozen = true;
+        PauseHandler.OnUnpause.Subscribe(eventHandler, () => isFrozen = false);
+        //PauseHandler.OnUnpause += () => isFrozen = false;
 
-        if (PlayerCutsceneManager.isIntroEnabled) isFrozen = true;   
+        if (PlayerCutsceneManager.isIntroEnabled) isFrozen = true;
     }
 
     private void OnDestroy()
     {
-        inputManager.input_jump.Onpressed -= StartJumpBuffer;
-        aimController.OnLockTarget -= () => isInLockState = true;
-        aimController.OnUnlockTarget -= () => isInLockState = false;
-        Chest.OnChestOpened -= () => isFrozen = true;
-        Chest.OnChestItemShow -= (x, y, z) => isFrozen = false;
-        PlayerCutsceneManager.OnIntroStarted-=  () => isFrozen = true;
-        PlayerCutsceneManager.OnIntroFinished -= () => isFrozen = false;
-        GameManager.OnPlayerReset -= ResetPlayerPos;
-        UIManager.OnStartedDialogue -= (x, y) => isFrozen = true;
-        UIManager.OnFinishedDialogue -= () => isFrozen = false;
-        PauseHandler.OnPause -= () => isFrozen = true;
-        PauseHandler.OnUnpause -= () => isFrozen = false;
+        eventHandler.UnsubcribeAll();
+
+        //inputManager.input_jump.Onpressed -= StartJumpBuffer;
+        //aimController.OnLockTarget -= () => isInLockState = true;
+        //aimController.OnUnlockTarget -= () => isInLockState = false;
+        //Chest.OnChestOpened -= () => isFrozen = true;
+        //Chest.OnChestItemShow -= (x, y, z) => isFrozen = false;
+        //PlayerCutsceneManager.OnIntroStarted -= () => isFrozen = true;
+        //PlayerCutsceneManager.OnIntroFinished -= () => isFrozen = false;
+        //GameManager.OnPlayerReset -= ResetPlayerPos;
+        //UIManager.OnStartedDialogue -= (x, y) => isFrozen = true;
+        //UIManager.OnFinishedDialogue -= () => isFrozen = false;
+        //PauseHandler.OnPause -= () => isFrozen = true;
+        //PauseHandler.OnUnpause -= () => isFrozen = false;
     }
 
     void Update()
     {
         if (isFrozen)
         {
-            characterController.Move(Vector3.down*0.1f);
+            characterController.Move(Vector3.down * 0.1f);
             return;
         }
         GetGroundNormal();
@@ -139,11 +159,11 @@ public class PlayerMovementController : MonoBehaviour
         //if (!characterController.isGrounded) return;
 
         RaycastHit hit;
-        var hasHit= Physics.Raycast(transform.position, Vector3.down,out hit, castMaxDistance, layerMask);
+        var hasHit = Physics.Raycast(transform.position, Vector3.down, out hit, castMaxDistance, layerMask);
         //Debug.DrawRay(transform.position, Vector3.down, Color.red);
         if (!hasHit) return;
-        Debug.DrawRay(hit.point, hit.normal,Color.blue);
-        groundDistance= hit.distance;
+        Debug.DrawRay(hit.point, hit.normal, Color.blue);
+        groundDistance = hit.distance;
         groundNormal = hit.normal;
     }
 
@@ -158,7 +178,7 @@ public class PlayerMovementController : MonoBehaviour
     {
 
         currentVelocity.y += Physics.gravity.y * Time.deltaTime;
-        
+
         if (characterController.isGrounded)
             currentVelocity.y = -.05f;
     }
@@ -234,8 +254,8 @@ public class PlayerMovementController : MonoBehaviour
 
         var tmpYSpeed = currentSpeed.y;
 
-        currentSpeed = Vector3.ProjectOnPlane(new Vector3(characterSpeed.x, currentSpeed.y, characterSpeed.z),groundNormal);
-      
+        currentSpeed = Vector3.ProjectOnPlane(new Vector3(characterSpeed.x, currentSpeed.y, characterSpeed.z), groundNormal);
+
         //currentSpeed.y = !characterController.isGrounded && currentSpeed.y < 0 ? currentSpeed.y + tmpYSpeed : currentSpeed.y;
 
         Debug.DrawRay(transform.position, currentSpeed, Color.red);
@@ -254,7 +274,7 @@ public class PlayerMovementController : MonoBehaviour
 
 
         jumpBuffer = false;
-        onJumped.Invoke();
+        OnJumped.TryInvoke();
         LockMovement();
         LockTurning();
         jumpTickCounter = jumpForceTicks;
@@ -271,7 +291,7 @@ public class PlayerMovementController : MonoBehaviour
         isCheckingLand = false;
         LockMovement(false);
         LockTurning(false);
-        onLanded.Invoke();
+        OnLanded.TryInvoke();
     }
 
     private async void ResetPlayerPos()

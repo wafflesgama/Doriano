@@ -4,14 +4,17 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UEventHandler;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager currentGameManager;
-    public static Action OnExitScreen;
-    public static Action OnPlayerReset;
+    public static UEvent OnExitScreen = new UEvent();
+    //public static Action OnExitScreen;
+    public static UEvent OnPlayerReset = new UEvent();
+    //public static Action OnPlayerReset;
 
-    public int resetFreezeDurationMs=800;
+    public int resetFreezeDurationMs = 800;
 
     bool restarFlag;
 
@@ -29,7 +32,8 @@ public class GameManager : MonoBehaviour
 
     public async void ResetPlayer()
     {
-        OnPlayerReset?.Invoke();
+        OnPlayerReset.TryInvoke();
+        //OnPlayerReset?.Invoke();
         await Task.Delay(700);
 
     }
@@ -39,21 +43,24 @@ public class GameManager : MonoBehaviour
         if (restarFlag) return;
         restarFlag = true;
 
-        OnExitScreen?.Invoke();
+        OnExitScreen.TryInvoke();
+        //OnExitScreen.Invoke();
         await Task.Delay(700);
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
     }
 
     public async void MainMenu()
     {
-        OnExitScreen?.Invoke();
+        OnExitScreen.TryInvoke();
+        //OnExitScreen?.Invoke();
         await Task.Delay(700);
         SceneManager.LoadSceneAsync("MainMenu");
     }
 
     public async void ExitGame()
     {
-        OnExitScreen?.Invoke();
+        OnExitScreen.TryInvoke();
+        //OnExitScreen?.Invoke();
         await Task.Delay(700);
         Application.Quit();
     }

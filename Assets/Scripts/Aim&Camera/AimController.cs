@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UEventHandler;
 
-public delegate void ChangeView();
+//public delegate void ChangeView();
 
 public class AimController : MonoBehaviour
 {
 
-    public event ChangeView OnLockTarget;
-    public event ChangeView OnUnlockTarget;
+    public UEvent OnLockTarget= new UEvent();
+    //public event ChangeView OnLockTarget;
+    public UEvent OnUnlockTarget= new UEvent();
+    //public event ChangeView OnUnlockTarget;
     public InputManager inputManager;
     public ObjectLockController lockController;
     public CameraController cameraController;
@@ -20,6 +23,7 @@ public class AimController : MonoBehaviour
 
     [Header("Exposed Variables")]
     public LockableObject currentLockedObj;
+    public UEventHandler eventHandler = new UEventHandler();
 
     bool isAimFrozen;
 
@@ -28,18 +32,23 @@ public class AimController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        inputManager.input_lockView.Onpressed += TryLock;
-        inputManager.input_lockView.Onreleased += TryUnlock;
-        PauseHandler.OnPause += () => PauseHandle(pause: true);
-        PauseHandler.OnUnpause += () => PauseHandle(pause: false);
+        inputManager.input_lockView.Onpressed.Subscribe(eventHandler,TryLock);
+        //inputManager.input_lockView.Onpressed += TryLock;
+        inputManager.input_lockView.Onreleased.Subscribe(eventHandler, TryUnlock);
+        //inputManager.input_lockView.Onreleased += TryUnlock;
+        PauseHandler.OnPause.Subscribe(eventHandler, () => PauseHandle(pause: true));
+        //PauseHandler.OnPause += () => PauseHandle(pause: true);
+        PauseHandler.OnUnpause.Subscribe(eventHandler,() => PauseHandle(pause: false));
+        //PauseHandler.OnUnpause += () => PauseHandle(pause: false);
     }
 
     private void OnDestroy()
     {
-        inputManager.input_lockView.Onpressed -= TryLock;
-        inputManager.input_lockView.Onreleased -= TryUnlock;
-        PauseHandler.OnPause -= () => PauseHandle(pause: true);
-        PauseHandler.OnUnpause -= () => PauseHandle(pause: false);
+        eventHandler.UnsubcribeAll();
+        //inputManager.input_lockView.Onpressed -= TryLock;
+        //inputManager.input_lockView.Onreleased -= TryUnlock;
+        //PauseHandler.OnPause -= () => PauseHandle(pause: true);
+        //PauseHandler.OnUnpause -= () => PauseHandle(pause: false);
     }
 
 
@@ -50,7 +59,7 @@ public class AimController : MonoBehaviour
         if (currentLockedObj != null)
         {
             cameraController.SwitchView(CameraController.ViewType.LockView);
-            OnLockTarget.Invoke();
+            OnLockTarget.TryInvoke();
         }
     }
 
@@ -58,7 +67,7 @@ public class AimController : MonoBehaviour
     {
         currentLockedObj = null;
         cameraController.SwitchView(CameraController.ViewType.MainView);
-        OnUnlockTarget.Invoke();
+        OnUnlockTarget.TryInvoke();
     }
 
     void PauseHandle(bool pause)

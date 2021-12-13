@@ -33,21 +33,20 @@ public class PlayerAnimationController : MonoBehaviour
     float speedVal, lockXValue, lockYValue;
     int attackLvl = 0;
 
+    UEventHandler eventHandler = new UEventHandler();
 
     void Start()
     {
         animator = GetComponent<Animator>();
         baseAnimatorController=animator.runtimeAnimatorController;
-        playerMovementController.onJumped += Animate_Jump;
-        playerMovementController.onLanded += Animate_Land;
-        attackController.OnAttack+=Animate_Attack;
+        playerMovementController.OnJumped.Subscribe(eventHandler,Animate_Jump);
+        playerMovementController.OnLanded.Subscribe(eventHandler, Animate_Land);
+        attackController.OnAttack.Subscribe(eventHandler, Animate_Attack);
     }
 
     private void OnDestroy()
     {
-        playerMovementController.onJumped -= Animate_Jump;
-        playerMovementController.onLanded -= Animate_Land;
-        attackController.OnAttack-=Animate_Attack;
+        eventHandler.UnsubcribeAll();
     }
 
     // Update is called once per frame

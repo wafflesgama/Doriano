@@ -16,6 +16,9 @@ public class Gump : MonoBehaviour
     public SkinnedMeshRenderer maskRenderer;
     public MeshRenderer mask2Renderer;
 
+
+    private UEventHandler eventHandler = new UEventHandler();
+
     PlayerDetection playerDetection;
     Rigidbody body;
     Animator animator;
@@ -33,7 +36,13 @@ public class Gump : MonoBehaviour
         collider = GetComponent<CapsuleCollider>();
         playerRef = FindObjectOfType<PlayerAnimationController>(includeInactive: true).transform;
         playerDetection = GetComponentInChildren<PlayerDetection>(includeInactive: true);
-        playerDetection.OnPlayerNearby += (isNear) => isPlayerClose = isNear;
+        playerDetection.OnPlayerNearby.Subscribe(eventHandler, (isNear) => isPlayerClose = isNear);
+        //playerDetection.OnPlayerNearby += (isNear) => isPlayerClose = isNear;
+    }
+
+    private void OnDestroy()
+    {
+        eventHandler.UnsubcribeAll();
     }
 
 

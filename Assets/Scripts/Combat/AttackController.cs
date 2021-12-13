@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UEventHandler;
 
-public delegate void AttackAction(int lvl, bool isRestoringCombo);
+//public delegate void AttackAction(int lvl, bool isRestoringCombo);
 
 public class AttackController : MonoBehaviour
 {
@@ -13,13 +14,15 @@ public class AttackController : MonoBehaviour
     [SerializeField] public float ComboRestoreTime;
     [SerializeField] public bool canRestoreCombo;
 
-    public event AttackAction OnAttack;
+    public  UEvent<int,bool> OnAttack= new UEvent<int, bool>();
     public int ComboIndex { get; private set; }
 
     public bool IsAttacking { get; set; }
 
     public void ResetComboIndex() => ComboIndex = 0;
     public void IncrementComboIndex() => ComboIndex = ComboIndex >= ComboSize ? 1 : ComboIndex + 1;
+
+    UEventHandler eventHandler = new UEventHandler();
 
     // [HideInInspector]
     [Header("Exposed Variables")]
@@ -34,16 +37,15 @@ public class AttackController : MonoBehaviour
     {
         canAttack = true;
         canIncrementAttack = true;
-        inputManager.input_attack.Onpressed += Attack;
-        PauseHandler.OnPause += () => canAttack = false;
-        PauseHandler.OnUnpause += () => canAttack = true;
+
+        inputManager.input_attack.Onpressed.Subscribe(eventHandler, Attack);
+        PauseHandler.OnPause.Subscribe(eventHandler, () => canAttack = false);
+        PauseHandler.OnUnpause.Subscribe(eventHandler, () => canAttack = true);
     }
 
     private void OnDestroy()
     {
-        inputManager.input_attack.Onpressed -= Attack;
-        PauseHandler.OnPause -= () => canAttack = false;
-        PauseHandler.OnUnpause -= () => canAttack = true;
+        eventHandler.UnsubcribeAll();
 
     }
 
@@ -95,7 +97,7 @@ public class AttackController : MonoBehaviour
 
         movementController.LockMovement();
         movementController.LockTurning();
-        OnAttack?.Invoke(ComboIndex, !isAttacking && ComboIndex > 1 && restoreAttackCombo);
+        OnAttack.TryInvoke(ComboIndex, !isAttacking && ComboIndex > 1 && restoreAttackCombo);
         isAttacking = true;
     }
 

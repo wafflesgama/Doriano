@@ -4,16 +4,20 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Playables;
+using static UEventHandler;
 
 public class PlayerCutsceneManager : MonoBehaviour
 {
-    public static Action OnIntroFinished;
-    public static Action OnIntroStarted;
+    public static UEvent OnIntroFinished=new UEvent();
+    //public static Action OnIntroFinished;
+    public static UEvent OnIntroStarted= new UEvent();
+    //public static Action OnIntroStarted;
     public static bool isIntroEnabled;
+
 
     PlayableDirector director;
     public bool playIntro = true;
-
+    public UEventHandler eventHandler = new UEventHandler();
     private void Awake()
     {
         isIntroEnabled = playIntro;
@@ -22,22 +26,22 @@ public class PlayerCutsceneManager : MonoBehaviour
     }
     void Start()
     {
-        GameManager.OnPlayerReset += HandlePlayerReset;
+        GameManager.OnPlayerReset.Subscribe(eventHandler,HandlePlayerReset);
     }
 
     private void OnDestroy()
     {
-        GameManager.OnPlayerReset -= HandlePlayerReset;
+        GameManager.OnPlayerReset.Subscribe(eventHandler, HandlePlayerReset);
     }
 
 
     public void IntroStarted()
     {
-        OnIntroStarted?.Invoke();
+        OnIntroStarted.TryInvoke();
     }
     public void IntroFinished()
     {
-        OnIntroFinished?.Invoke();
+        OnIntroFinished.TryInvoke();
     }
 
     private async void HandlePlayerReset()

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
-
+using static UEventHandler;
 
 [Serializable]
 public struct Item
@@ -27,8 +27,10 @@ public class Chest : MonoBehaviour, Interactable
 
     public delegate void ItemAction(Sprite image,string name, string description);
 
-    public static System.Action OnChestOpened;
-    public static ItemAction OnChestItemShow;
+    public static UEvent OnChestOpened= new UEvent();
+    //public static System.Action OnChestOpened;
+    public static UEvent<Sprite,string,string> OnChestItemShow= new UEvent<Sprite, string, string>();
+    //public static ItemAction OnChestItemShow;
 
     PlayableDirector director;
 
@@ -45,7 +47,8 @@ public class Chest : MonoBehaviour, Interactable
     public void Interact()
     {
         director.Play();
-        OnChestOpened?.Invoke();
+        OnChestOpened.TryInvoke();
+        //OnChestOpened?.Invoke();
         gameObject.tag = "Untagged";
     }
 
@@ -54,13 +57,14 @@ public class Chest : MonoBehaviour, Interactable
     #region Animation Invoked Functions
     public void ShowItemUI()
     {
-        OnChestItemShow?.Invoke(item.image,item.name,item.description);
+        OnChestItemShow.TryInvoke(item.image,item.name,item.description);
+        //OnChestItemShow?.Invoke(item.image,item.name,item.description);
         glowSystem.Stop();
     }
 
     public void OpenChestAction()
     {
-        OnChestOpened?.Invoke();
+        OnChestOpened.TryInvoke();
         lidCollider.gameObject.SetActive(true);
     }
     #endregion

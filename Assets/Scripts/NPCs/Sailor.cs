@@ -11,19 +11,20 @@ public class Sailor : MonoBehaviour, Interactable
 
     [Multiline] public string[] introDialogue;
 
+    UEventHandler eventHandler = new UEventHandler();
     void Start()
     {
-        UIManager.OnFinishedDialogue += FinishedDialogue;
+        UIManager.OnFinishedDialogue.Subscribe(eventHandler,FinishedDialogue);
     }
 
     private void OnDestroy()
     {
-        UIManager.OnFinishedDialogue -= FinishedDialogue;
+        eventHandler.UnsubcribeAll();
     }
 
     public void Interact()
     {
-        UIManager.OnStartedDialogue?.Invoke(transform,introDialogue);
+        UIManager.OnStartedDialogue.TryInvoke(transform,introDialogue);
         gameObject.tag = "Untagged";
     }
 

@@ -40,19 +40,26 @@ public class PlayerSoundManager : MonoBehaviour
     AudioSource audioSource;
     int typeSkipCounter = 0;
 
+    UEventHandler eventHandler = new UEventHandler();
+
     private void Awake()
     {
         typeSkipCounter = 0;
         currentManager = this;
         audioSource = GetComponent<AudioSource>();
+    }
 
-        playerMovementController.onJumped += PlayJumpSound;
-        playerMovementController.onLanded += PlayLandSound;
-        InteractionHandler.OnInteractableAppeared += (x) => PlaySound(interactInSound);
-        InteractionHandler.OnInteractableDisappeared += () => PlaySound(interactOutSound);
-        PlayerDamageHandler.OnHit += (x) => PlaySound(PickRandomClip(hitSounds));
-        Chest.OnChestOpened += () => PlaySound(chestOpenSound);
-        UIManager.OnFadeScreen += PlayFadeSound;
+    private void Start()
+    {
+
+        playerMovementController.OnJumped.Subscribe(eventHandler, PlayJumpSound);
+        playerMovementController.OnLanded.Subscribe(eventHandler, PlayLandSound);
+        InteractionHandler.OnInteractableAppeared.Subscribe(eventHandler, (x) => PlaySound(interactInSound));
+        InteractionHandler.OnInteractableDisappeared.Subscribe(eventHandler, () => PlaySound(interactOutSound));
+        PlayerDamageHandler.OnHit.Subscribe(eventHandler, (x) => PlaySound(PickRandomClip(hitSounds)));
+        Chest.OnChestOpened.Subscribe(eventHandler, () => PlaySound(chestOpenSound));
+        UIManager.OnFadeScreen.Subscribe(eventHandler, PlayFadeSound);
+        
     }
 
     private void OnDestroy()
@@ -60,13 +67,8 @@ public class PlayerSoundManager : MonoBehaviour
         if (currentManager == this)
             currentManager = null;
 
-        playerMovementController.onJumped -= PlayJumpSound;
-        playerMovementController.onLanded -= PlayLandSound;
-        InteractionHandler.OnInteractableAppeared -= (x) => PlaySound(interactInSound);
-        InteractionHandler.OnInteractableDisappeared -= () => PlaySound(interactOutSound);
-        PlayerDamageHandler.OnHit -= (x) => PlaySound(PickRandomClip(hitSounds));
-        Chest.OnChestOpened -= () => PlaySound(chestOpenSound);
-        UIManager.OnFadeScreen -= PlayFadeSound;
+
+        eventHandler.UnsubcribeAll();
     }
 
 

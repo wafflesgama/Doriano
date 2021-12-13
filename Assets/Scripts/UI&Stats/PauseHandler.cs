@@ -3,18 +3,32 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using System;
+using static UEventHandler;
 
 public class PauseHandler : MonoBehaviour
 {
     public InputManager inputManager;
-    public static Action OnPause;
-    public static Action OnUnpause;
+    //public static Action OnPause;
+    //public static Action OnUnpause;
+    public static UEvent OnPause= new UEvent();
+    public static UEvent OnUnpause= new UEvent();
 
     bool isInPause;
 
+    UEventHandler eventHandler = new UEventHandler();
+
     private void Awake()
     {
-        inputManager.input_pause.Onpressed += PauseHandle;
+    }
+
+    private void Start()
+    {
+        inputManager.input_pause.Onpressed.Subscribe(eventHandler,PauseHandle);
+    }
+
+    private void OnDestroy()
+    {
+        eventHandler.UnsubcribeAll();
     }
 
     public void PauseHandle()
@@ -22,9 +36,11 @@ public class PauseHandler : MonoBehaviour
         PlayerSoundManager.currentManager.PlayUIClick();
 
         if (isInPause)
-            OnUnpause?.Invoke();
+            OnUnpause.TryInvoke();
+        //OnUnpause?.Invoke();
         else
-            OnPause?.Invoke();
+            OnPause.TryInvoke();
+        //OnPause?.Invoke();
 
         isInPause = !isInPause;
     }
@@ -38,7 +54,7 @@ public class PauseHandler : MonoBehaviour
     public void RestartLevel()
     {
         PlayerSoundManager.currentManager.PlayUIClick();
-        OnUnpause?.Invoke();
+        OnUnpause.TryInvoke();
         GameManager.currentGameManager.ResetPlayer();
     }
 

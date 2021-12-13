@@ -2,26 +2,28 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UEventHandler;
 
 public class InteractionHandler : MonoBehaviour
 {
-    public delegate void InteractableNotify(Vector3 pos);
 
-    public static InteractableNotify OnInteractableAppeared;
-    public static Action OnInteractableDisappeared;
+    public static UEvent<Vector3> OnInteractableAppeared= new UEvent<Vector3>();
+    public static UEvent OnInteractableDisappeared= new UEvent();
     static GameObject objectToInteract = null;
 
     public InputManager inputManager;
 
 
+    UEventHandler eventHandler = new UEventHandler();
+
     private void Start()
     {
-        inputManager.input_attack.Onpressed += TryInteract;
+        inputManager.input_attack.Onpressed.Subscribe(eventHandler,TryInteract);
     }
 
     private void OnDestroy()
     {
-        inputManager.input_attack.Onpressed -= TryInteract;
+        eventHandler.UnsubcribeAll(); 
     }
     public static bool IsInteractableNearby() => objectToInteract != null;
 
@@ -33,7 +35,7 @@ public class InteractionHandler : MonoBehaviour
             {
                 objectToInteract = other.gameObject;
                 var offset = objectToInteract.transform.parent.GetComponent<Interactable>().GetOffset();
-                OnInteractableAppeared?.Invoke(other.transform.position + offset);
+                OnInteractableAppeared.TryInvoke(other.transform.position + offset);
             }
         }else if(other.transform.parent.tag == "KillBound")
         {
@@ -49,7 +51,7 @@ public class InteractionHandler : MonoBehaviour
             if (objectToInteract != null && objectToInteract.transform.position == other.transform.position)
             {
                 objectToInteract = null;
-                OnInteractableDisappeared?.Invoke();
+                OnInteractableDisappeared.TryInvoke();
             }
         }
     }
@@ -59,7 +61,7 @@ public class InteractionHandler : MonoBehaviour
         if (objectToInteract == null || objectToInteract.transform.parent.tag != "Interactable") return;
 
         objectToInteract.transform.parent.GetComponent<Interactable>().Interact();
-        OnInteractableDisappeared?.Invoke();
+        OnInteractableDisappeared.TryInvoke();
     }
 
 }

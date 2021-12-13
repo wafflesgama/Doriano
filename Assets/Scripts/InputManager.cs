@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UEventHandler;
 
 [RequireComponent(typeof(PlayerInput))]
 public class InputManager : MonoBehaviour
@@ -17,16 +18,20 @@ public class InputManager : MonoBehaviour
     public Button<float> input_pause = new Button<float>();
 
     #region Button Base stuff
-    public delegate void ClickAction();
+    //public delegate void ClickAction();
 
     public class Button<TValue>  //Suported data types--> float | Vector2 | Vector3 | Vector4
     {
         public TValue value { get; set; }
-        public event ClickAction Onpressed;
-        public event ClickAction Onreleased;
+        //public event ClickAction Onpressed;
+        //public event ClickAction Onreleased;
+        public UEvent Onpressed= new UEvent();
+        public UEvent Onreleased= new UEvent();
 
-        public void Pressed() => Onpressed?.Invoke();
-        public void Released() => Onreleased?.Invoke();
+        public void Pressed() => Onpressed.TryInvoke();
+        //public void Pressed() => Onpressed?.Invoke();
+        public void Released() => Onreleased.TryInvoke();
+        //public void Released() => Onreleased?.Invoke();
     }
 
     public class BufferedButton : MonoBehaviour  //Suported data types--> bool
@@ -54,12 +59,6 @@ public class InputManager : MonoBehaviour
         }
     }
     #endregion
-
-    PlayerInput playerInput;
-    private void Start()
-    {
-        playerInput = GetComponent<PlayerInput>();
-    }
 
     private void OnMove(InputValue inputValue) => SetInputInfo(input_move, inputValue);
     private void OnLook(InputValue inputValue) => SetInputInfo(input_look, inputValue);

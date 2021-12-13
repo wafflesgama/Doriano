@@ -19,6 +19,8 @@ public class PlayerVfxManager : MonoBehaviour
     float rate;
     bool followedByJump, isLanding;
 
+    UEventHandler eventHandler = new UEventHandler();
+
     private void Awake()
     {
         dustVisualEffect.gameObject.SetActive(true);
@@ -27,16 +29,15 @@ public class PlayerVfxManager : MonoBehaviour
     void Start()
     {
         dustVisualEffect.SetFloat("Rate", 0);
-        movementController.onJumped += JumpParticles;
-        movementController.onLanded += LandParticles;
-        PlayerDamageHandler.OnHit += HitParticles;
+
+        movementController.OnJumped.Subscribe(eventHandler, JumpParticles);
+        movementController.OnLanded.Subscribe(eventHandler, LandParticles);
+        PlayerDamageHandler.OnHit.Subscribe(eventHandler, HitParticles);
     }
 
     private void OnDestroy()
     {
-        movementController.onJumped -= JumpParticles;
-        movementController.onLanded -= LandParticles;
-        PlayerDamageHandler.OnHit -= HitParticles;
+        eventHandler.UnsubcribeAll();
     }
 
     void Update()

@@ -18,13 +18,15 @@ public class PlayerWeaponsController : MonoBehaviour
     [SerializeField] private List<WeaponEntry> weaponsInSlot;
     WeaponEntry? weaponInHand;
 
+    UEventHandler eventHandler = new UEventHandler();
     void Start()
     {
-        inputManager.input_equipWeapon.Onpressed += EquipWeapon;
+        inputManager.input_equipWeapon.Onpressed.Subscribe(eventHandler,EquipWeapon);
     }
     private void OnDestroy()
     {
-        inputManager.input_equipWeapon.Onpressed -= EquipWeapon;
+        eventHandler.UnsubcribeAll();
+        //inputManager.input_equipWeapon.Onpressed -= EquipWeapon;
     }
 
     int GetNextWeaponIndex()
