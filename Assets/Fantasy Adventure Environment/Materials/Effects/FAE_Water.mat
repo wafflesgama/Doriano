@@ -84,32 +84,32 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_1942CF3A: 1.31
+    - Vector1_1942CF3A: 0.5
     - Vector1_67814CC1: 0.1
     - Vector1_7DFD32F9: 0.13
-    - Vector1_BE75C478: -13.1
-    - Vector1_E23F9E57: 0.553
-    - Vector1_E796673B: 9.73
+    - Vector1_BE75C478: 5.38
+    - Vector1_E23F9E57: 0.333
+    - Vector1_E796673B: 7.02
     - _BumpScale: 1
     - _Cutoff: 0.5
-    - _Depth: 8.81
+    - _Depth: 2.65
     - _Depthdarkness: 0.58
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _EdgeFade: 0.264
+    - _EdgeFade: 0.313
     - _FlowSpeed: 0.79
     - _Fresnelexponent: 4
-    - _Glossiness: 0.671
+    - _Glossiness: 0.833
     - _HighlightPanning: 0
     - _Metallic: 0
-    - _Metallicness: 0.419
+    - _Metallicness: 0.251
     - _Mode: 0
-    - _NormalStrength: 0.272
+    - _NormalStrength: 0.702
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _RefractionAmount: 0.0924
     - _RimDistance: 0
-    - _RimRize: 1.54
+    - _RimRize: 2
     - _RimSize: 4
     - _RimTiling: 4.9
     - _Rimfalloff: 0.25
@@ -119,7 +119,7 @@ Material:
     - _SurfaceHightlighttiling: 0.25
     - _Surfacehightlightsize: 0
     - _TesselationEdgeLengt: 0.15
-    - _Tiling: 0.24
+    - _Tiling: 0.12
     - _Transparency: 0.534
     - _UVSec: 0
     - _UseIntersectionHighlight: 1
@@ -135,6 +135,6 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 0.5019608}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
-    - _WaterColor: {r: 0.03364181, g: 0.44907027, b: 0.6603774, a: 1}
+    - _WaterColor: {r: 0, g: 0.5578583, b: 0.7169812, a: 1}
     - _WaterShallowColor: {r: 0.12853324, g: 0.6366401, b: 0.7830189, a: 1}
   m_BuildTextureStacks: []

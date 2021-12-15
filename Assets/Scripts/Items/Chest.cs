@@ -25,12 +25,8 @@ public class Chest : MonoBehaviour, Interactable
     public Collider lidCollider;
 
 
-    public delegate void ItemAction(Sprite image,string name, string description);
-
     public static UEvent OnChestOpened= new UEvent();
-    //public static System.Action OnChestOpened;
     public static UEvent<Sprite,string,string> OnChestItemShow= new UEvent<Sprite, string, string>();
-    //public static ItemAction OnChestItemShow;
 
     PlayableDirector director;
 
@@ -48,7 +44,7 @@ public class Chest : MonoBehaviour, Interactable
     {
         director.Play();
         OnChestOpened.TryInvoke();
-        //OnChestOpened?.Invoke();
+        GameManager.currentGameManager.ItemCollected(item.name);
         gameObject.tag = "Untagged";
     }
 
@@ -58,7 +54,6 @@ public class Chest : MonoBehaviour, Interactable
     public void ShowItemUI()
     {
         OnChestItemShow.TryInvoke(item.image,item.name,item.description);
-        //OnChestItemShow?.Invoke(item.image,item.name,item.description);
         glowSystem.Stop();
     }
 

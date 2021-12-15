@@ -61,7 +61,7 @@ public class PauseHandler : MonoBehaviour
     public void ToMainMenu()
     {
         PlayerSoundManager.currentManager.PlayUIClick();
-        GameManager.currentGameManager.MainMenu();
+        GameManager.currentGameManager.GoToMainMenu();
     }
 
 }

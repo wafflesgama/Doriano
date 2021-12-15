@@ -10,15 +10,9 @@ using static UEventHandler;
 
 public class UIManager : MonoBehaviour
 {
-    //public delegate void DialogueAction(Transform narrator, string[] messages);
-    //public delegate void FadeScreenAction(bool fadeIn);
-
     public static UEvent<Transform, string[]> OnStartedDialogue = new UEvent<Transform, string[]>();
-    //public static DialogueAction OnStartedDialogue
     public static UEvent OnFinishedDialogue = new UEvent();
-    //public static Action OnFinishedDialogue;
     public static UEvent<bool> OnFadeScreen = new UEvent<bool>();
-    //public static FadeScreenAction OnFadeScreen;
 
     public AimController aimController;
     public InputManager inputManager;
@@ -57,57 +51,47 @@ public class UIManager : MonoBehaviour
     public UnityEngine.EventSystems.EventSystem eventSystem;
     public float pauseAnimDuration = .15f;
 
+    [Header("Gump Counter")]
+    public RectTransform gumpCounterGroup;
+    public TextMeshProUGUI gumpCounterText;
+
+    [Header("Credits")]
+    public DialogueWriter creditsWriter;
+    [Multiline]
+    public string[] creditsMessage;
+    public CanvasGroup creditsGroup;
+
     public UEventHandler eventHandler = new UEventHandler();
     int lockArrowShowing = -1;
     bool isInDialogue;
+    int gumpShowCounter = 0;
 
 
     void Start()
     {
         fadeAnimator.gameObject.SetActive(true);
         OnFadeScreen.TryInvoke(true);
-        //OnFadeScreen?.Invoke(fadeIn: true);
 
         aimController.OnLockTarget.Subscribe(eventHandler, ShowArrow);
-        //aimController.OnLockTarget += ShowArrow;
         aimController.OnUnlockTarget.Subscribe(eventHandler, HideArrow);
-        //aimController.OnUnlockTarget += HideArrow;
         Chest.OnChestItemShow.Subscribe(eventHandler, ShowItem);
-        //Chest.OnChestItemShow += ShowItem;
         InteractionHandler.OnInteractableAppeared.Subscribe(eventHandler, ShowInteractable);
-        //InteractionHandler.OnInteractableAppeared += ShowInteractable;
         InteractionHandler.OnInteractableDisappeared.Subscribe(eventHandler, HideInteractable);
-        //InteractionHandler.OnInteractableDisappeared += HideInteractable;
         OnStartedDialogue.Subscribe(eventHandler, RegisterDialogue);
-        //OnStartedDialogue += RegisterDialogue;
         inputManager.input_attack.Onpressed.Subscribe(eventHandler, TryNextMessage);
-        //inputManager.input_attack.Onpressed += TryNextMessage;
         GameManager.OnExitScreen.Subscribe(eventHandler, () => FadeScreen(fadeIn: false));
-        //GameManager.OnExitScreen += () => FadeScreen(fadeIn: false);
         GameManager.OnPlayerReset.Subscribe(eventHandler, FadeInOutScreen);
-        //GameManager.OnPlayerReset += FadeInOutScreen;
         PauseHandler.OnPause.Subscribe(eventHandler, () => FadePauseMenu(fadeIn: true));
-        //PauseHandler.OnPause += () => FadePauseMenu(fadeIn: true);
         PauseHandler.OnUnpause.Subscribe(eventHandler, () => FadePauseMenu(fadeIn: false));
-        //PauseHandler.OnUnpause += () => FadePauseMenu(fadeIn: false);
-
+        PlayerCutsceneManager.OnEndingStarted.Subscribe(eventHandler, () => FadeInOutScreen());
+        PlayerCutsceneManager.OnCreditsStarted.Subscribe(eventHandler, ShowCredits);
+        Gump.OnGumpDied.Subscribe(eventHandler, ShowGumpCounter);
     }
 
 
     private void OnDestroy()
     {
         eventHandler.UnsubcribeAll();
-        //aimController.OnLockTarget -= ShowArrow;
-        //aimController.OnUnlockTarget -= HideArrow;
-        //Chest.OnChestItemShow -= ShowItem;
-        //InteractionHandler.OnInteractableAppeared -= ShowInteractable;
-        //InteractionHandler.OnInteractableDisappeared -= HideInteractable;
-        //OnStartedDialogue -= RegisterDialogue;
-        //inputManager.input_attack.Onpressed -= TryNextMessage;
-        //GameManager.OnExitScreen -= () => FadeScreen(fadeIn: false);
-        //GameManager.OnPlayerReset -= FadeInOutScreen;
-        //PauseHandler.OnPause -= () => FadePauseMenu(fadeIn: true);
-        //PauseHandler.OnUnpause -= () => FadePauseMenu(fadeIn: false);
     }
 
 
@@ -141,15 +125,11 @@ public class UIManager : MonoBehaviour
     private void ShowArrow()
     {
         lockArrowShowing = 1;
-        //var targetPos = aimController.currentLockedObj.position+new Vector3(0,1,0);
-        //arrowIcon.transform.position = targetPos;
-        //arrowIcon.color =  Color.red;
     }
 
     private void HideArrow()
     {
         lockArrowShowing = 0;
-        //arrowIcon.color = new Color(0, 0, 0, 0);
     }
 
 
@@ -196,7 +176,6 @@ public class UIManager : MonoBehaviour
             isInDialogue = false;
             dialogueContainer.DOScale(0, dialogueAnimDuration).SetEase(dialogueOutEase);
             OnFinishedDialogue.TryInvoke();
-            //OnFinishedDialogue?.Invoke();
         }
     }
 
@@ -218,6 +197,30 @@ public class UIManager : MonoBehaviour
         pauseGroup.interactable = fadeIn;
         pauseGroup.blocksRaycasts = fadeIn;
         pauseGroup.DOFade(fadeIn ? 1 : 0, pauseAnimDuration).SetEase(fadeIn ? Ease.OutQuart : Ease.InQuart);
+    }
+
+    private async void ShowGumpCounter()
+    {
+        await Task.Delay(50);
+        gumpCounterText.text = GameManager.currentGameManager.gumpKilled + "x";
+        gumpShowCounter++;
+        if (gumpShowCounter <= 1)
+            gumpCounterGroup.transform.DOLocalMoveY(-100, pauseAnimDuration).SetEase(Ease.OutBack);
+
+        await Task.Delay(2000);
+        gumpShowCounter--;
+
+        if (gumpShowCounter == 0)
+            gumpCounterGroup.transform.DOLocalMoveY(100, pauseAnimDuration).SetEase(Ease.InBack);
+    }
+
+    private async void ShowCredits()
+    {
+        creditsGroup.DOFade(1, 1.4f).SetEase(Ease.InQuad);
+        await Task.Delay(1500);
+        await creditsWriter.WriteAllMessages(creditsMessage, 4000);
+        await Task.Delay(3000);
+        GameManager.currentGameManager.GoToMainMenu();
     }
 
 

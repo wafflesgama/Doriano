@@ -79,33 +79,21 @@ public class PlayerMovementController : MonoBehaviour
 
     void Start()
     {
-        //Time.timeScale = .5f;
         groundNormal = Vector3.up;
         inputManager.input_jump.Onpressed.Subscribe(eventHandler, StartJumpBuffer);
-        //inputManager.input_jump.Onpressed += StartJumpBuffer;
         characterController = GetComponent<CharacterController>();
         Chest.OnChestOpened.Subscribe(eventHandler, () => isFrozen = true);
-        //Chest.OnChestOpened += () => isFrozen = true;
         Chest.OnChestItemShow.Subscribe(eventHandler, (x, y, z) => isFrozen = false);
-        //Chest.OnChestItemShow += (x, y, z) => isFrozen = false;
         aimController.OnLockTarget.Subscribe(eventHandler, () => isInLockState = true);
-        //aimController.OnLockTarget += () => isInLockState = true;
         aimController.OnUnlockTarget.Subscribe(eventHandler, () => isInLockState = false);
-        //aimController.OnUnlockTarget += () => isInLockState = false;
         PlayerCutsceneManager.OnIntroStarted.Subscribe(eventHandler, () => isFrozen = true);
-        //PlayerCutsceneManager.OnIntroStarted += () => isFrozen = true;
         PlayerCutsceneManager.OnIntroFinished.Subscribe(eventHandler, () => isFrozen = false);
-        //PlayerCutsceneManager.OnIntroFinished += () => isFrozen = false;
         UIManager.OnStartedDialogue.Subscribe(eventHandler, (x, y) => isFrozen = true);
-        //UIManager.OnStartedDialogue += (x, y) => isFrozen = true;
         UIManager.OnFinishedDialogue.Subscribe(eventHandler, () => isFrozen = false);
-        //UIManager.OnFinishedDialogue += () => isFrozen = false;
         GameManager.OnPlayerReset.Subscribe(eventHandler, ResetPlayerPos);
-        //GameManager.OnPlayerReset += ResetPlayerPos;
         PauseHandler.OnPause.Subscribe(eventHandler, () => isFrozen = true);
-        //PauseHandler.OnPause += () => isFrozen = true;
         PauseHandler.OnUnpause.Subscribe(eventHandler, () => isFrozen = false);
-        //PauseHandler.OnUnpause += () => isFrozen = false;
+        PlayerCutsceneManager.OnEndingStarted.Subscribe(eventHandler, () => isFrozen = true);
 
         if (PlayerCutsceneManager.isIntroEnabled) isFrozen = true;
     }
@@ -113,19 +101,6 @@ public class PlayerMovementController : MonoBehaviour
     private void OnDestroy()
     {
         eventHandler.UnsubcribeAll();
-
-        //inputManager.input_jump.Onpressed -= StartJumpBuffer;
-        //aimController.OnLockTarget -= () => isInLockState = true;
-        //aimController.OnUnlockTarget -= () => isInLockState = false;
-        //Chest.OnChestOpened -= () => isFrozen = true;
-        //Chest.OnChestItemShow -= (x, y, z) => isFrozen = false;
-        //PlayerCutsceneManager.OnIntroStarted -= () => isFrozen = true;
-        //PlayerCutsceneManager.OnIntroFinished -= () => isFrozen = false;
-        //GameManager.OnPlayerReset -= ResetPlayerPos;
-        //UIManager.OnStartedDialogue -= (x, y) => isFrozen = true;
-        //UIManager.OnFinishedDialogue -= () => isFrozen = false;
-        //PauseHandler.OnPause -= () => isFrozen = true;
-        //PauseHandler.OnUnpause -= () => isFrozen = false;
     }
 
     void Update()

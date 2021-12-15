@@ -8,9 +8,9 @@ using static UEventHandler;
 public class AimController : MonoBehaviour
 {
 
-    public UEvent OnLockTarget= new UEvent();
+    public UEvent OnLockTarget = new UEvent();
     //public event ChangeView OnLockTarget;
-    public UEvent OnUnlockTarget= new UEvent();
+    public UEvent OnUnlockTarget = new UEvent();
     //public event ChangeView OnUnlockTarget;
     public InputManager inputManager;
     public ObjectLockController lockController;
@@ -32,23 +32,15 @@ public class AimController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        inputManager.input_lockView.Onpressed.Subscribe(eventHandler,TryLock);
-        //inputManager.input_lockView.Onpressed += TryLock;
+        inputManager.input_lockView.Onpressed.Subscribe(eventHandler, TryLock);
         inputManager.input_lockView.Onreleased.Subscribe(eventHandler, TryUnlock);
-        //inputManager.input_lockView.Onreleased += TryUnlock;
         PauseHandler.OnPause.Subscribe(eventHandler, () => PauseHandle(pause: true));
-        //PauseHandler.OnPause += () => PauseHandle(pause: true);
-        PauseHandler.OnUnpause.Subscribe(eventHandler,() => PauseHandle(pause: false));
-        //PauseHandler.OnUnpause += () => PauseHandle(pause: false);
+        PauseHandler.OnUnpause.Subscribe(eventHandler, () => PauseHandle(pause: false));
     }
 
     private void OnDestroy()
     {
         eventHandler.UnsubcribeAll();
-        //inputManager.input_lockView.Onpressed -= TryLock;
-        //inputManager.input_lockView.Onreleased -= TryUnlock;
-        //PauseHandler.OnPause -= () => PauseHandle(pause: true);
-        //PauseHandler.OnUnpause -= () => PauseHandle(pause: false);
     }
 
 

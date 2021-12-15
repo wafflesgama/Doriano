@@ -10,17 +10,23 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager currentGameManager;
     public static UEvent OnExitScreen = new UEvent();
-    //public static Action OnExitScreen;
     public static UEvent OnPlayerReset = new UEvent();
-    //public static Action OnPlayerReset;
 
     public int resetFreezeDurationMs = 800;
 
+    public int necessaryItems = 4;
+    public List<string> collectedItems;
+    public int gumpKilled=0;
     bool restarFlag;
+
+    public UEventHandler eventHandler = new UEventHandler(); 
 
     private void Awake()
     {
         currentGameManager = this;
+        collectedItems = new List<string>();
+        gumpKilled = 0;
+        Gump.OnGumpDied.Subscribe(eventHandler, () => gumpKilled++);
     }
 
     private void OnDestroy()
@@ -29,6 +35,13 @@ public class GameManager : MonoBehaviour
             currentGameManager = null;
 
     }
+
+    public void ItemCollected(string item)
+    {
+        collectedItems.Add(item);   
+    }
+
+    #region Level & Scene Mang
 
     public async void ResetPlayer()
     {
@@ -49,7 +62,7 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
     }
 
-    public async void MainMenu()
+    public async void GoToMainMenu()
     {
         OnExitScreen.TryInvoke();
         //OnExitScreen?.Invoke();
@@ -64,4 +77,6 @@ public class GameManager : MonoBehaviour
         await Task.Delay(700);
         Application.Quit();
     }
+
+    #endregion Level & Scene Mang
 }

@@ -48,12 +48,21 @@ public class DialogueWriter : MonoBehaviour
         return true;
     }
 
-   
+    public async Task WriteAllMessages(string[] messages, int delayBetweenMsg)
+    {
+        foreach (string message in messages)
+        {
+            await WriteMessage(message);
+            await Task.Delay(delayBetweenMsg);
+        }
+    }
+
+
     /// <summary>
     /// Method revealing the text one character at a time.
     /// </summary>
     /// <returns></returns>
-    public async void WriteMessage(string message)
+    public async Task WriteMessage(string message)
     {
       
         textComponent.maxVisibleCharacters = 0;

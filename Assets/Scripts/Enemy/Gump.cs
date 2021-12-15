@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.VFX;
+using static UEventHandler;
 
 public class Gump : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class Gump : MonoBehaviour
     public SkinnedMeshRenderer bodyRenderer;
     public SkinnedMeshRenderer maskRenderer;
     public MeshRenderer mask2Renderer;
-
+    public static UEvent OnGumpDied= new UEvent();
 
     private UEventHandler eventHandler = new UEventHandler();
 
@@ -60,6 +61,7 @@ public class Gump : MonoBehaviour
         deathParticles.SendEvent("OnDeath");
         await Task.Delay(destroyDelayMs);
         Destroy(gameObject);
+        OnGumpDied.TryInvoke();
     }
 
     private void FixedUpdate()
