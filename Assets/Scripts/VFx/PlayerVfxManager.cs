@@ -8,13 +8,16 @@ public class PlayerVfxManager : MonoBehaviour
 {
     public PlayerMovementController movementController;
 
-    [Header("Dust trail")]
+    [Header("Dust effect")]
     public VisualEffect dustVisualEffect;
     public float speedStartThreshold = 8;
     public float particleRate = 8;
 
-    [Header("Hit trail")]
+    [Header("Hit effect")]
     public VisualEffect hitVisualEffect;
+
+    [Header("Splash effect")]
+    public VisualEffect splashVisualEffect;
 
     float rate;
     bool followedByJump, isLanding;
@@ -33,6 +36,7 @@ public class PlayerVfxManager : MonoBehaviour
         movementController.OnJumped.Subscribe(eventHandler, JumpParticles);
         movementController.OnLanded.Subscribe(eventHandler, LandParticles);
         PlayerDamageHandler.OnHit.Subscribe(eventHandler, HitParticles);
+        InteractionHandler.OnSplash.Subscribe(eventHandler, SplashParticles);
     }
 
     private void OnDestroy()
@@ -81,9 +85,14 @@ public class PlayerVfxManager : MonoBehaviour
 
     private void HitParticles(Vector3 pos)
     {
-        hitVisualEffect.SetVector3("SourcePos",pos);
+        hitVisualEffect.SetVector3("SourcePos", pos);
         hitVisualEffect.SendEvent("OnHit");
+
     }
 
-    
+    private void SplashParticles(Vector3 pos)
+    {
+        splashVisualEffect.SetVector3("SourcePos", pos);
+        splashVisualEffect.SendEvent("OnSplash");
+    }
 }

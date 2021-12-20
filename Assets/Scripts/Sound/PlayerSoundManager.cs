@@ -42,6 +42,7 @@ public class PlayerSoundManager : MonoBehaviour
     [Header("Other Movement Sounds")]
     public Sound[] jumpSounds;
     public Sound landSound;
+    public Sound splashSound;
 
     AudioSource mainSource;
     int typeSkipCounter = 0;
@@ -69,6 +70,7 @@ public class PlayerSoundManager : MonoBehaviour
         Chest.OnChestOpened.Subscribe(eventHandler, () => PlaySound(chestOpenSound));
         UIManager.OnFadeScreen.Subscribe(eventHandler, PlayFadeSound);
         PlayerCutsceneManager.OnEndingStarted.Subscribe(eventHandler, ()=> FadeAllSources(fadeIn:false));
+        InteractionHandler.OnSplash.Subscribe(eventHandler, (x)=> PlaySound(splashSound));
     }
 
     private void OnDestroy()

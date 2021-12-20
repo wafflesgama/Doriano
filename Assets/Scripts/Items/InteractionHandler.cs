@@ -9,6 +9,7 @@ public class InteractionHandler : MonoBehaviour
 
     public static UEvent<Vector3> OnInteractableAppeared= new UEvent<Vector3>();
     public static UEvent OnInteractableDisappeared= new UEvent();
+    public static UEvent<Vector3> OnSplash = new UEvent<Vector3>();
     static GameObject objectToInteract = null;
 
     public InputManager inputManager;
@@ -29,7 +30,11 @@ public class InteractionHandler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
+        if(other.transform.parent.tag == "Water")
+        {
+            OnSplash.TryInvoke(other.ClosestPoint(transform.position));
+            return;
+        }
 
 
         if (other.transform.parent.tag == "Interactable")
