@@ -29,6 +29,9 @@ public class InteractionHandler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+
+
+
         if (other.transform.parent.tag == "Interactable")
         {
             if (objectToInteract == null || objectToInteract.transform.position != other.transform.position)
@@ -59,6 +62,7 @@ public class InteractionHandler : MonoBehaviour
     public void TryInteract()
     {
         if (objectToInteract == null || objectToInteract.transform.parent.tag != "Interactable") return;
+        if (PlayerCutsceneManager.isInCutscene) return;
 
         objectToInteract.transform.parent.GetComponent<Interactable>().Interact();
         OnInteractableDisappeared.TryInvoke();

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using System.Threading.Tasks;
 
 public class CameraController : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class CameraController : MonoBehaviour
         LockView,
         DialogueView
     }
-
+    public Camera cameraBrain;
     public CinemachineVirtualCamera mainViewCamera;
     public CinemachineVirtualCamera lockViewCamera;
     public CinemachineVirtualCamera dialogueCamera;
@@ -27,6 +28,7 @@ public class CameraController : MonoBehaviour
 
         UIManager.OnStartedDialogue.Subscribe(eventHandler, StartDialogueCamera);
         UIManager.OnFinishedDialogue.Subscribe(eventHandler, EndDialogueCamera);
+        PlayerCutsceneManager.OnEndingStarted.Subscribe(eventHandler, DisableCameras);
     }
     private void OnDestroy()
     {
@@ -40,6 +42,11 @@ public class CameraController : MonoBehaviour
 
     }
 
+    public async void DisableCameras()
+    {
+        await Task.Delay(1000);
+        cameraBrain.gameObject.SetActive(false);
+    }
 
     public void SwitchView(ViewType viewType)
     {

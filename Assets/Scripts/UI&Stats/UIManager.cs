@@ -80,10 +80,11 @@ public class UIManager : MonoBehaviour
         OnStartedDialogue.Subscribe(eventHandler, RegisterDialogue);
         inputManager.input_attack.Onpressed.Subscribe(eventHandler, TryNextMessage);
         GameManager.OnExitScreen.Subscribe(eventHandler, () => FadeScreen(fadeIn: false));
-        GameManager.OnPlayerReset.Subscribe(eventHandler, FadeInOutScreen);
+        GameManager.OnPlayerReset.Subscribe(eventHandler, () => FadeInOutScreen());
         PauseHandler.OnPause.Subscribe(eventHandler, () => FadePauseMenu(fadeIn: true));
         PauseHandler.OnUnpause.Subscribe(eventHandler, () => FadePauseMenu(fadeIn: false));
-        PlayerCutsceneManager.OnEndingStarted.Subscribe(eventHandler, () => FadeInOutScreen());
+        PlayerCutsceneManager.OnEndingStarted.Subscribe(eventHandler, () => FadeScreen(fadeIn: false));
+        PlayerCutsceneManager.OnEndingFadeIn.Subscribe(eventHandler, () => FadeScreen(fadeIn: true));
         PlayerCutsceneManager.OnCreditsStarted.Subscribe(eventHandler, ShowCredits);
         Gump.OnGumpDied.Subscribe(eventHandler, ShowGumpCounter);
     }
@@ -182,10 +183,10 @@ public class UIManager : MonoBehaviour
     private bool NextMessage() => dialogueWriter.WriteNextMessage();
 
 
-    private async void FadeInOutScreen()
+    private async void FadeInOutScreen(int? delay = null)
     {
         FadeScreen(false);
-        await Task.Delay(GameManager.currentGameManager.resetFreezeDurationMs);
+        await Task.Delay(delay.HasValue ? delay.Value : GameManager.currentGameManager.resetFreezeDurationMs);
         FadeScreen(true);
     }
 
@@ -212,6 +213,11 @@ public class UIManager : MonoBehaviour
 
         if (gumpShowCounter == 0)
             gumpCounterGroup.transform.DOLocalMoveY(100, pauseAnimDuration).SetEase(Ease.InBack);
+    }
+
+    private  void ShowEnding()
+    {
+        FadeInOutScreen(5000);
     }
 
     private async void ShowCredits()

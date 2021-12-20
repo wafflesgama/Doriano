@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 [RequireComponent(typeof(AudioSource))]
 public class PlayerSoundManager : MonoBehaviour
@@ -17,6 +18,11 @@ public class PlayerSoundManager : MonoBehaviour
 
     public PlayerMovementController playerMovementController;
     public CheckTerrainTextures checkTerrainTextures;
+    public AudioSource[] externalAudioSources;
+
+    [Header("Fading AudioSources")]
+    public float fadeDuration=2;
+    public Ease fadeEase;
 
     [Header("Interaction Sounds")]
     public Sound interactInSound;
@@ -37,21 +43,24 @@ public class PlayerSoundManager : MonoBehaviour
     public Sound[] jumpSounds;
     public Sound landSound;
 
-    AudioSource audioSource;
+    AudioSource mainSource;
     int typeSkipCounter = 0;
-
+    float mainSourceVol;
+    float[] externalSourcesVol;
     UEventHandler eventHandler = new UEventHandler();
 
     private void Awake()
     {
         typeSkipCounter = 0;
         currentManager = this;
-        audioSource = GetComponent<AudioSource>();
+        mainSource = GetComponent<AudioSource>();
+        SaveAllVolumes();
+        SetAllSources(0);
+        FadeAllSources(fadeIn: true);
     }
 
     private void Start()
     {
-
         playerMovementController.OnJumped.Subscribe(eventHandler, PlayJumpSound);
         playerMovementController.OnLanded.Subscribe(eventHandler, PlayLandSound);
         InteractionHandler.OnInteractableAppeared.Subscribe(eventHandler, (x) => PlaySound(interactInSound));
@@ -59,7 +68,7 @@ public class PlayerSoundManager : MonoBehaviour
         PlayerDamageHandler.OnHit.Subscribe(eventHandler, (x) => PlaySound(PickRandomClip(hitSounds)));
         Chest.OnChestOpened.Subscribe(eventHandler, () => PlaySound(chestOpenSound));
         UIManager.OnFadeScreen.Subscribe(eventHandler, PlayFadeSound);
-        
+        PlayerCutsceneManager.OnEndingStarted.Subscribe(eventHandler, ()=> FadeAllSources(fadeIn:false));
     }
 
     private void OnDestroy()
@@ -90,7 +99,28 @@ public class PlayerSoundManager : MonoBehaviour
             PlaySoundCustomVol(PickRandomClip(grassFootstepSounds), maxValue);
         }
 
+    }
 
+    private void SetAllSources(float volume)
+    {
+        mainSource.volume = volume;
+        foreach (var externalSource in externalAudioSources)
+            externalSource.volume = volume;
+    }
+
+    private void SaveAllVolumes()
+    {
+        mainSourceVol = mainSource.volume;
+        externalSourcesVol = new float[externalAudioSources.Length];
+        for (int i = 0; i < externalSourcesVol.Length; i++)
+            externalSourcesVol[i] = externalAudioSources[i].volume;
+    }
+
+    private void FadeAllSources(bool fadeIn)
+    {
+        mainSource.DOFade(fadeIn? mainSourceVol:0,fadeDuration).SetEase(fadeEase);
+        for (int i = 0; i < externalAudioSources.Length; i++)
+            externalAudioSources[i].DOFade(fadeIn ? externalSourcesVol[i] : 0, fadeDuration).SetEase(fadeEase);
     }
 
     public void PlayDialogueTypeSound()
@@ -130,7 +160,7 @@ public class PlayerSoundManager : MonoBehaviour
     }
 
 
-    private void PlaySoundCustomVol(Sound sound, float volumeFactor) => audioSource.PlayOneShot(sound.clip, sound.volume * volumeFactor);
-    private void PlaySound(Sound sound) => audioSource.PlayOneShot(sound.clip, sound.volume);
+    private void PlaySoundCustomVol(Sound sound, float volumeFactor) => mainSource.PlayOneShot(sound.clip, sound.volume * volumeFactor);
+    private void PlaySound(Sound sound) => mainSource.PlayOneShot(sound.clip, sound.volume);
     private Sound PickRandomClip(Sound[] source) => source[UnityEngine.Random.Range(0, source.Length)];
 }

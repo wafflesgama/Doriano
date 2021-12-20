@@ -25,6 +25,10 @@ public class GameManager : MonoBehaviour
     {
         currentGameManager = this;
         collectedItems = new List<string>();
+        collectedItems.Add(null);
+        collectedItems.Add(null);
+        collectedItems.Add(null);
+        collectedItems.Add(null);
         gumpKilled = 0;
         Gump.OnGumpDied.Subscribe(eventHandler, () => gumpKilled++);
     }

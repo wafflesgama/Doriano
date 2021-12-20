@@ -29,13 +29,13 @@ public class Sailor : MonoBehaviour, Interactable
 
     public void Interact()
     {
-        if (!hasMadeIntro)
-        {
-            hasMadeIntro = true;
-            UIManager.OnStartedDialogue.TryInvoke(transform, introDialogue);
-        }
-        else
-        {
+        //if (!hasMadeIntro)
+        //{
+        //    hasMadeIntro = true;
+        //    UIManager.OnStartedDialogue.TryInvoke(transform, introDialogue);
+        //}
+        //else
+        //{
             if (GameManager.currentGameManager.collectedItems.Count == 0)
             {
                 UIManager.OnStartedDialogue.TryInvoke(transform, noFoundDialogue);
@@ -60,7 +60,7 @@ public class Sailor : MonoBehaviour, Interactable
                      PlayerCutsceneManager.currentPlayerCutsceneManager.StartEnding();
                  });
             }
-        }
+        //}
         gameObject.tag = "Untagged";
     }
 

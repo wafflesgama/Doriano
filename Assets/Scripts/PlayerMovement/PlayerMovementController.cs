@@ -163,6 +163,9 @@ public class PlayerMovementController : MonoBehaviour
         if (jumpTickCounter <= 0) return;
 
         jumpTickCounter--;
+        if (currentSpeed.y < 0)
+            currentSpeed.y = 0;
+
         currentSpeed += Vector3.up * jumpAcceleration;
     }
 
@@ -187,7 +190,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         //if (!characterController.isGrounded) return;
 
-        if (groundDistance > minGroundDistace) return;
+        if (groundDistance > minGroundDistace && !characterController.isGrounded) return;
 
         if (isMovementLocked)
         {
@@ -245,7 +248,8 @@ public class PlayerMovementController : MonoBehaviour
 
     async void InitiateJump()
     {
-        if (!jumpBuffer || groundDistance > minGroundDistace) return;
+        if (!jumpBuffer || (groundDistance > minGroundDistace && !characterController.isGrounded)) return;
+
 
 
         jumpBuffer = false;
@@ -261,7 +265,7 @@ public class PlayerMovementController : MonoBehaviour
 
     void CheckIfJumpLanded()
     {
-        if (!isCheckingLand || groundDistance > minGroundDistace || !characterController.isGrounded) return;
+        if (!isCheckingLand || groundDistance > minGroundDistace && !characterController.isGrounded) return;
 
         isCheckingLand = false;
         LockMovement(false);

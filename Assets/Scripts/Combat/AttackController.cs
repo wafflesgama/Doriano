@@ -41,6 +41,9 @@ public class AttackController : MonoBehaviour
         inputManager.input_attack.Onpressed.Subscribe(eventHandler, Attack);
         PauseHandler.OnPause.Subscribe(eventHandler, () => canAttack = false);
         PauseHandler.OnUnpause.Subscribe(eventHandler, () => canAttack = true);
+        PlayerCutsceneManager.OnIntroStarted.Subscribe(eventHandler, () => canAttack = false);
+        PlayerCutsceneManager.OnIntroFinished.Subscribe(eventHandler, () => canAttack = true);
+        PlayerCutsceneManager.OnEndingStarted.Subscribe(eventHandler, () => canAttack = false);
     }
 
     private void OnDestroy()
