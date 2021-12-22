@@ -7,8 +7,8 @@ using static UEventHandler;
 public class InteractionHandler : MonoBehaviour
 {
 
-    public static UEvent<Vector3> OnInteractableAppeared= new UEvent<Vector3>();
-    public static UEvent OnInteractableDisappeared= new UEvent();
+    public static UEvent<Transform,Vector3> OnInteractableAppeared = new UEvent<Transform,Vector3>();
+    public static UEvent OnInteractableDisappeared = new UEvent();
     public static UEvent<Vector3> OnSplash = new UEvent<Vector3>();
     static GameObject objectToInteract = null;
 
@@ -19,18 +19,20 @@ public class InteractionHandler : MonoBehaviour
 
     private void Start()
     {
-        inputManager.input_attack.Onpressed.Subscribe(eventHandler,TryInteract);
+        inputManager.input_attack.Onpressed.Subscribe(eventHandler, TryInteract);
     }
 
     private void OnDestroy()
     {
-        eventHandler.UnsubcribeAll(); 
+        eventHandler.UnsubcribeAll();
     }
     public static bool IsInteractableNearby() => objectToInteract != null;
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.transform.parent.tag == "Water")
+        if (other.transform.parent == null) return;
+
+        if (other.transform.parent.tag == "Water")
         {
             OnSplash.TryInvoke(other.ClosestPoint(transform.position));
             return;
@@ -42,10 +44,11 @@ public class InteractionHandler : MonoBehaviour
             if (objectToInteract == null || objectToInteract.transform.position != other.transform.position)
             {
                 objectToInteract = other.gameObject;
-                var offset = objectToInteract.transform.parent.GetComponent<Interactable>().GetOffset();
-                OnInteractableAppeared.TryInvoke(other.transform.position + offset);
+                if (objectToInteract.transform.parent.TryGetComponent<Interactable>(out Interactable interactable))
+                    OnInteractableAppeared.TryInvoke(other.transform, interactable.GetOffset());
             }
-        }else if(other.transform.parent.tag == "KillBound")
+        }
+        else if (other.transform.parent.tag == "KillBound")
         {
             GameManager.currentGameManager.ResetPlayer();
         }
@@ -54,6 +57,8 @@ public class InteractionHandler : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (other.transform.parent == null) return;
+
         if (other.transform.parent.tag == "Interactable")
         {
             if (objectToInteract != null && objectToInteract.transform.position == other.transform.position)

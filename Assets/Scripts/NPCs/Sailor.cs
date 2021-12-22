@@ -64,7 +64,7 @@ public class Sailor : MonoBehaviour, Interactable
         gameObject.tag = "Untagged";
     }
 
-    public async void FinishedDialogue()
+    private async void FinishedDialogue()
     {
         await Task.Delay(1000);
         gameObject.tag = "Interactable";

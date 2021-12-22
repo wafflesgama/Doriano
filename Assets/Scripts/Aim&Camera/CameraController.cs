@@ -82,6 +82,7 @@ public class CameraController : MonoBehaviour
     {
         dialogueTarget = t;
         dialogueCamera.LookAt = dialogueTarget;
+        dialogueCamera.Follow = dialogueTarget;
         SwitchView(ViewType.DialogueView);
     }
 

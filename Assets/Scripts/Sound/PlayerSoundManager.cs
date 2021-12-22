@@ -64,7 +64,7 @@ public class PlayerSoundManager : MonoBehaviour
     {
         playerMovementController.OnJumped.Subscribe(eventHandler, PlayJumpSound);
         playerMovementController.OnLanded.Subscribe(eventHandler, PlayLandSound);
-        InteractionHandler.OnInteractableAppeared.Subscribe(eventHandler, (x) => PlaySound(interactInSound));
+        InteractionHandler.OnInteractableAppeared.Subscribe(eventHandler, (x,y) => PlaySound(interactInSound));
         InteractionHandler.OnInteractableDisappeared.Subscribe(eventHandler, () => PlaySound(interactOutSound));
         PlayerDamageHandler.OnHit.Subscribe(eventHandler, (x) => PlaySound(PickRandomClip(hitSounds)));
         Chest.OnChestOpened.Subscribe(eventHandler, () => PlaySound(chestOpenSound));

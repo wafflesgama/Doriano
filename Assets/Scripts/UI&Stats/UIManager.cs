@@ -66,7 +66,9 @@ public class UIManager : MonoBehaviour
     bool isInDialogue;
     int gumpShowCounter = 0;
 
-
+    bool trackInteractable;
+    Transform interactableRef;
+    Vector3 interactableOffset;
     void Start()
     {
         fadeAnimator.gameObject.SetActive(true);
@@ -111,6 +113,10 @@ public class UIManager : MonoBehaviour
             arrowIcon.color = new Color(0, 0, 0, 0);
             lockArrowShowing = -1;
         }
+
+        if(trackInteractable)
+            interactableText.transform.position = interactableRef.position+interactableOffset;
+
     }
 
 
@@ -134,14 +140,17 @@ public class UIManager : MonoBehaviour
     }
 
 
-    private void ShowInteractable(Vector3 position)
+    private void ShowInteractable(Transform source,Vector3 offset)
     {
-        interactableText.transform.position = position;
+        trackInteractable=true;
+        interactableRef = source;
+        interactableOffset = offset;
         interactableText.transform.DOScale(Vector3.one, showInteractAnimDuration).SetEase(showInteractEase);
     }
 
     private void HideInteractable()
     {
+        trackInteractable = false;
         interactableText.transform.DOScale(Vector3.zero, showInteractAnimDuration).SetEase(showInteractEase);
     }
 
