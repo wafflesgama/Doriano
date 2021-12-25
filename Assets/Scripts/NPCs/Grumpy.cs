@@ -22,7 +22,7 @@ public class Grumpy : MonoBehaviour, Interactable
     public float minZ, maxZ, minX, maxX, lerpSpeed;
     public float maxDistanceMultp;
     public AnimationCurve lerpMultiplier;
-
+    public float xSpeed;
 
     public Collider wallRef;
 
@@ -30,6 +30,7 @@ public class Grumpy : MonoBehaviour, Interactable
     bool isBlockingPath, hasUnlockedPath;
     Transform playerRef;
     Plane wallPlane;
+
     UEventHandler eventHandler = new UEventHandler();
     public Vector3 GetOffset() => messageOffset;
 
@@ -97,7 +98,12 @@ public class Grumpy : MonoBehaviour, Interactable
             distance = Mathf.Clamp(distance, 0, maxDistanceMultp);
             var factor = lerpMultiplier.Evaluate(distance / maxDistanceMultp);
             var targetPos = wallPlane.ClosestPointOnPlane(playerRef.position);
+            var lastPos = transform.position;
             transform.position = Vector3.Lerp(transform.position, new Vector3(targetPos.x, transform.position.y + characterHeightOffset, targetPos.z), Time.deltaTime * lerpSpeed * factor);
+            var speedIsRight= Vector3.Dot(transform.position - lastPos,transform.right);
+            xSpeed= Vector3.Distance(transform.position, lastPos)/Time.deltaTime;
+            xSpeed*=speedIsRight> 0?1:-1;
+            animator.SetFloat(animatorSpeedName, xSpeed);
             //animator.SetBool(animatorBlockVarName, isBlockingPath);
         }
     }

@@ -29,13 +29,13 @@ public class Sailor : MonoBehaviour, Interactable
 
     public void Interact()
     {
-        //if (!hasMadeIntro)
-        //{
-        //    hasMadeIntro = true;
-        //    UIManager.OnStartedDialogue.TryInvoke(transform, introDialogue);
-        //}
-        //else
-        //{
+        if (!hasMadeIntro)
+        {
+            hasMadeIntro = true;
+            UIManager.OnStartedDialogue.TryInvoke(transform, introDialogue);
+        }
+        else
+        {
             if (GameManager.currentGameManager.collectedItems.Count == 0)
             {
                 UIManager.OnStartedDialogue.TryInvoke(transform, noFoundDialogue);
@@ -47,10 +47,11 @@ public class Sailor : MonoBehaviour, Interactable
 
                 someFoundDialogue[1] = "You found a ";
                 foreach (var item in GameManager.currentGameManager.collectedItems)
-                    someFoundDialogue[1] += "<#DE4D4D>" + item + "</color> and a";
-                someFoundDialogue[1] = someFoundDialogue[1].Substring(0, someFoundDialogue[1].Length - 6);
+                    someFoundDialogue[1] += "<#DE4D4D>" + item + "</color> and a ";
+                someFoundDialogue[1] = someFoundDialogue[1].Substring(0, someFoundDialogue[1].Length - 7);
                 someFoundDialogue[2] = "Try finding the other parts around here";
                 someFoundDialogue[3] = "Maybe all hope is not lost, afterall";
+                UIManager.OnStartedDialogue.TryInvoke(transform, someFoundDialogue);
             }
             else
             {
@@ -60,7 +61,7 @@ public class Sailor : MonoBehaviour, Interactable
                      PlayerCutsceneManager.currentPlayerCutsceneManager.StartEnding();
                  });
             }
-        //}
+        }
         gameObject.tag = "Untagged";
     }
 

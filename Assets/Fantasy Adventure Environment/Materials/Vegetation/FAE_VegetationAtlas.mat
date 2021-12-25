@@ -117,17 +117,17 @@ Material:
     - _DstBlend: 0
     - _FlatLighting: 0
     - _Float3: 0
-    - _GlobalWindMotion: 0.033
+    - _GlobalWindMotion: 0.478
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Height: 0
     - _HeightmapInfluence: 0
     - _Keyword0: 0
-    - _LeafFlutter: 0.195
+    - _LeafFlutter: 0.265
     - _MaskClipValue: 0.5
     - _MaxHeight: 0
-    - _MaxWindStrength: 0.443
+    - _MaxWindStrength: 0.041
     - _Metallic: 0
     - _MinHeight: -0.5
     - _Mode: 1
@@ -149,7 +149,7 @@ Material:
     - _TerrainSize: 1024
     - _ToggleSwitch0: 0
     - _ToggleSwitch1: 0
-    - _TransmissionAmount: 5.8
+    - _TransmissionAmount: 6.34
     - _TransmissionSize: 14.89
     - _Transmissionsize: 0
     - _UVSec: 0
@@ -157,7 +157,7 @@ Material:
     - _WindAmplitudeMultiplier: 10
     - _WindSpeed: 0.5
     - _WindStiffness: 1
-    - _WindSwinging: 0.458
+    - _WindSwinging: 0.732
     - _WindTint: 0
     - _WindWeight: 0.17
     - _Windspeed: 0.201
