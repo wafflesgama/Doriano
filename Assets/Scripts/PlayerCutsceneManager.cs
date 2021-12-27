@@ -67,6 +67,6 @@ public class PlayerCutsceneManager : MonoBehaviour
     private async void HandlePlayerReset()
     {
         await Task.Delay(GameManager.currentGameManager.resetFreezeDurationMs);
-        if (playIntro) director.Play(introClip);
+        //if (playIntro) director.Play(introClip);
     }
 }

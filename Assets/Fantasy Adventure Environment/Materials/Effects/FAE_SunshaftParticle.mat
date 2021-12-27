@@ -76,16 +76,16 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _Fadedistance: 12.3
+    - _Fadedistance: 125.4
     - _Gloss: 0.5
     - _Glossiness: 0.5
     - _Intersectionfade: 20
-    - _InvFade: 0.34
+    - _InvFade: 2.32
     - _Metallic: 0
     - _Mode: 0
     - _Noisesize: 0.006
     - _OcclusionStrength: 1
-    - _Opacity: 0.115
+    - _Opacity: 0.284
     - _Parallax: 0.02
     - _SrcBlend: 1
     - _UVSec: 0
@@ -98,3 +98,4 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
     - _TintColor: {r: 1, g: 1, b: 1, a: 0.459}
+  m_BuildTextureStacks: []

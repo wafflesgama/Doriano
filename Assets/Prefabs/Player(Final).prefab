@@ -993,7 +993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19280f53bed4a84490f9db60800270d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  writingDelay: 25
+  writingDelay: 18
 --- !u!114 &453873553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1033,7 +1033,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 465320023}
-  m_LocalRotation: {x: 0.26137125, y: 0.00014002621, z: -0.000043097185, w: 0.9652384}
+  m_LocalRotation: {x: 0.26137123, y: 0.00014004113, z: -0.00004310487, w: 0.9652384}
   m_LocalPosition: {x: 0.00597322, y: 7.2, z: -14.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1714,8 +1714,8 @@ CanvasGroup:
   m_GameObject: {fileID: 731756380}
   m_Enabled: 1
   m_Alpha: 0
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!1 &757746293
 GameObject:
@@ -1905,7 +1905,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1945,6 +1945,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 859963769}
+  - component: {fileID: 795933821}
   m_Layer: 5
   m_Name: GumpCount
   m_TagString: Untagged
@@ -1974,6 +1975,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 100}
   m_SizeDelta: {x: 0, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &795933821
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859963768}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &923609535
 GameObject:
   m_ObjectHideFlags: 0
@@ -4394,7 +4407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.3254902}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -8757,14 +8770,14 @@ MonoBehaviour:
   gumpCounterText: {fileID: 923609539}
   creditsWriter: {fileID: 1063484509}
   creditsMessage:
-  - 'A university solo project
+  - 'A short university project
 
     <size=-25>made by </size>
 
     Guilherme Gama'
   - '<size=-10>All external <u>assets</u> used
 
-    are credited in the project description</size>'
+    are credited in the About page</size>'
   - Thank you for playing it!
   creditsGroup: {fileID: 731756382}
 --- !u!114 &5282413694936334902
@@ -8821,7 +8834,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5282413694969612557}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0000017881393, y: 1.1682793, z: -4.9836245}
+  m_LocalPosition: {x: 0.000005364418, y: 1.1682794, z: -4.9836226}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5282413695875617797}
@@ -8986,7 +8999,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5282413695012243499}
   m_LocalRotation: {x: 0.000000028476297, y: 0.75868154, z: 0.6514617, w: -0.000000033163023}
-  m_LocalPosition: {x: 0.0000017881393, y: 1.1682793, z: -4.9836245}
+  m_LocalPosition: {x: 0.000005364418, y: 1.1682794, z: -4.9836226}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5282413696268726497}
@@ -9134,7 +9147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23b522981551fca4d881177195e0731b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playIntro: 0
+  playIntro: 1
   introClip: {fileID: 11400000, guid: 99177ffb34781fc479849b769f39d411, type: 2}
 --- !u!320 &1714662023
 PlayableDirector:
@@ -10236,7 +10249,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5282413695975349806}
   m_LocalRotation: {x: 0.000000028476297, y: 0.75868154, z: 0.6514617, w: -0.000000033163023}
-  m_LocalPosition: {x: 0.800001, y: 1.09832, z: -2.7812402}
+  m_LocalPosition: {x: 0.80000806, y: 1.0983202, z: -2.7812374}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5282413695419437445}

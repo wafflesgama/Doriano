@@ -25,7 +25,7 @@ public class AimController : MonoBehaviour
     public LockableObject currentLockedObj;
     public UEventHandler eventHandler = new UEventHandler();
 
-    bool isAimFrozen;
+    bool isAimFrozen,pausedState;
 
     void Start()
     {
@@ -64,6 +64,7 @@ public class AimController : MonoBehaviour
 
     void PauseHandle(bool pause)
     {
+        pausedState = pause;
         isAimFrozen = pause;
         Cursor.visible = pause;
         Cursor.lockState = !pause ? CursorLockMode.Locked : CursorLockMode.None;
@@ -72,6 +73,12 @@ public class AimController : MonoBehaviour
     void Update()
     {
         if (isAimFrozen) return;
+
+        if (!pausedState && Cursor.visible)
+        {
+            Cursor.visible = false;
+            Cursor.lockState =  CursorLockMode.Locked;
+        }
 
         if (currentLockedObj != null)
         {

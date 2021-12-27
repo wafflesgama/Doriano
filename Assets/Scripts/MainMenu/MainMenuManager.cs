@@ -12,31 +12,60 @@ public class MainMenuManager : MonoBehaviour
     public float fadeSpeed = .5f;
     public AudioSource audioSource;
     public AudioClip clickSound;
+    public CanvasGroup mainGroup;
+    public CanvasGroup creditsGroup;
+    public CanvasGroup settingsGroup;
+    public Animator fadeAnimator;
 
-    bool inTransition;
+    //int menuState = -1;
+    //bool inTransition;
+    CanvasGroup currentGroup;
     void Awake()
     {
-        fade.color = Color.black;
-        FadeScreen(false);
+        //fade.color = Color.black;
+        currentGroup = mainGroup;
+    }
+
+    private void Start()
+    {
+        Cursor.visible = true;
     }
 
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.anyKey && !inTransition)
-        {
-            inTransition = true;
-            audioSource.PlayOneShot(clickSound);
-            GoToGame();
-        }
-    }
+    //// Update is called once per frame
+    //void Update()
+    //{
+    //    //if (Input.anyKey && menuState == -1)
+    //    //{
+    //    //    menuState = 0;
+    //    //    audioSource.PlayOneShot(clickSound);
+    //    //    ChangeScreen(mainGroup);
+    //    //}
+    //}
 
-    private async void GoToGame()
+    public void GoToMain() => ChangeScreen(mainGroup);
+    public void GoToSettings() => ChangeScreen(settingsGroup);
+    public void GoToCredits() => ChangeScreen(creditsGroup);
+
+    public async void GoToGame()
     {
-        FadeScreen(true);
-        await Task.Delay(600);
+        Cursor.visible = false;
+        audioSource.PlayOneShot(clickSound);
+        fadeAnimator.SetBool("FadeIn", false);
+        await Task.Delay(800);
         SceneManager.LoadScene("World1");
     }
-    private void FadeScreen(bool fadeIn) => fade.DOFade(fadeIn ? 1 : 0, fadeSpeed).SetEase(Ease.InOutQuad);
+    //private void FadeScreen(bool fadeIn) => fade.DOFade(fadeIn ? 1 : 0, fadeSpeed).SetEase(Ease.InOutQuad);
+
+
+    private async void ChangeScreen(CanvasGroup outGroup)
+    {
+        audioSource.PlayOneShot(clickSound);
+        fadeAnimator.SetBool("FadeIn", false);
+        await Task.Delay(800);
+        currentGroup.gameObject.SetActive(false);
+        outGroup.gameObject.SetActive(true);
+        currentGroup = outGroup;
+        fadeAnimator.SetBool("FadeIn", true);
+    }
 }
