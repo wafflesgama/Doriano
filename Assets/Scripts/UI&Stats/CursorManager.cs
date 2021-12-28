@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CursorManager : MonoBehaviour
 {
-    static CursorManager instance;  
+    static CursorManager instance;
     [SerializeField]
     public Texture2D defaulfCursor;
     [SerializeField]
@@ -27,12 +28,13 @@ public class CursorManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-        Cursor.SetCursor(clickCursor, hotspot, CursorMode.ForceSoftware);
+            Cursor.SetCursor(clickCursor, hotspot, CursorMode.ForceSoftware);
         }
 
         if (Input.GetMouseButtonUp(0))
         {
             Cursor.SetCursor(defaulfCursor, hotspot, CursorMode.ForceSoftware);
         }
+
     }
 }

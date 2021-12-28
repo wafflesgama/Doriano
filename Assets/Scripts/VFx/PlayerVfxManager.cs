@@ -83,8 +83,9 @@ public class PlayerVfxManager : MonoBehaviour
         dustVisualEffect.SendEvent("OnJump");
     }
 
-    private void HitParticles(Vector3 pos)
+    private async  void HitParticles(Vector3 pos)
     {
+        await Task.Delay(200);
         hitVisualEffect.SetVector3("SourcePos", pos);
         hitVisualEffect.SendEvent("OnHit");
 

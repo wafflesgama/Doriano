@@ -19,7 +19,7 @@ public class GenericNPC : MonoBehaviour,Interactable
     public void Interact()
     {
         UIManager.OnStartedDialogue.TryInvoke(transform, dialogue);
-        gameObject.tag = "Untagged";
+        gameObject.tag = "Uninteractable";
     }
 
 

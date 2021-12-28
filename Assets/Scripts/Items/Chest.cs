@@ -45,7 +45,7 @@ public class Chest : MonoBehaviour, Interactable
         director.Play();
         OnChestOpened.TryInvoke();
         GameManager.currentGameManager.ItemCollected(item.name);
-        gameObject.tag = "Untagged";
+        gameObject.tag = "Uninteractable";
     }
 
     #endregion

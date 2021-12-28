@@ -7,7 +7,7 @@ using static UEventHandler;
 public class InteractionHandler : MonoBehaviour
 {
 
-    public static UEvent<Transform,Vector3> OnInteractableAppeared = new UEvent<Transform,Vector3>();
+    public static UEvent<Transform, Vector3> OnInteractableAppeared = new UEvent<Transform, Vector3>();
     public static UEvent OnInteractableDisappeared = new UEvent();
     public static UEvent<Vector3> OnSplash = new UEvent<Vector3>();
     static GameObject objectToInteract = null;
@@ -59,14 +59,14 @@ public class InteractionHandler : MonoBehaviour
     {
         if (other.transform.parent == null) return;
 
-        if (other.transform.parent.tag == "Interactable")
-        {
-            if (objectToInteract != null && objectToInteract.transform.position == other.transform.position)
+        //if (other.transform.parent.tag == "Interactable" || objectToInteract.transform.parent.tag != "Uninteractable")
+        //{
+            if (objectToInteract != null && objectToInteract.transform.position == other.transform.position && objectToInteract.name== other.gameObject.name)
             {
                 objectToInteract = null;
                 OnInteractableDisappeared.TryInvoke();
             }
-        }
+        //}
     }
 
     public void TryInteract()

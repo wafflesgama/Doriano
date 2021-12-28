@@ -17,6 +17,9 @@ public class MainMenuManager : MonoBehaviour
     public CanvasGroup settingsGroup;
     public Animator fadeAnimator;
 
+    public PlayerSoundManager.Sound fadeInSound;
+    public PlayerSoundManager.Sound fadeOutSound;
+
     //int menuState = -1;
     //bool inTransition;
     CanvasGroup currentGroup;
@@ -29,6 +32,8 @@ public class MainMenuManager : MonoBehaviour
     private void Start()
     {
         Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        audioSource.PlayOneShot(fadeInSound.clip, fadeInSound.volume);
     }
 
 
@@ -47,8 +52,19 @@ public class MainMenuManager : MonoBehaviour
     public void GoToSettings() => ChangeScreen(settingsGroup);
     public void GoToCredits() => ChangeScreen(creditsGroup);
 
+    public async void ExitGame()
+    {
+        audioSource.PlayOneShot(fadeOutSound.clip, fadeOutSound.volume);
+        Cursor.visible = false;
+        audioSource.PlayOneShot(clickSound);
+        fadeAnimator.SetBool("FadeIn", false);
+        await Task.Delay(800);
+        Application.Quit();
+    }
+
     public async void GoToGame()
     {
+        audioSource.PlayOneShot(fadeOutSound.clip, fadeOutSound.volume);
         Cursor.visible = false;
         audioSource.PlayOneShot(clickSound);
         fadeAnimator.SetBool("FadeIn", false);
@@ -61,11 +77,15 @@ public class MainMenuManager : MonoBehaviour
     private async void ChangeScreen(CanvasGroup outGroup)
     {
         audioSource.PlayOneShot(clickSound);
+        audioSource.PlayOneShot(fadeOutSound.clip, fadeOutSound.volume);
         fadeAnimator.SetBool("FadeIn", false);
         await Task.Delay(800);
         currentGroup.gameObject.SetActive(false);
         outGroup.gameObject.SetActive(true);
         currentGroup = outGroup;
+        audioSource.PlayOneShot(fadeInSound.clip, fadeInSound.volume);
         fadeAnimator.SetBool("FadeIn", true);
     }
+
+   
 }

@@ -62,7 +62,7 @@ public class Sailor : MonoBehaviour, Interactable
                  });
             }
         }
-        gameObject.tag = "Untagged";
+        gameObject.tag = "Uninteractable";
     }
 
     private async void FinishedDialogue()

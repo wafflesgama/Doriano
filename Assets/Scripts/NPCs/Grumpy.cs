@@ -65,7 +65,7 @@ public class Grumpy : MonoBehaviour, Interactable
         {
             UIManager.OnStartedDialogue.TryInvoke(transform, afterDoneDialogue);
         }
-        gameObject.tag = "Untagged";
+        gameObject.tag = "Uninteractable";
     }
 
     private bool CheckIfUnlocked() => hasUnlockedPath = GameManager.currentGameManager.gumpKilled >= numGumpsNecessary;
