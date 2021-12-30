@@ -9,6 +9,7 @@ TagManager:
   - Feather
   - KillBound
   - Water
+  - Uninteractable
   layers:
   - Default
   - TransparentFX

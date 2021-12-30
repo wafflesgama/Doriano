@@ -1,5 +1,5 @@
 {
-    "m_SGVersion": 2,
+    "m_SGVersion": 3,
     "m_Type": "UnityEditor.ShaderGraph.GraphData",
     "m_ObjectId": "58487b08b1c14a4f90a463e734e1f499",
     "m_Properties": [
@@ -14,6 +14,12 @@
         }
     ],
     "m_Keywords": [],
+    "m_Dropdowns": [],
+    "m_CategoryData": [
+        {
+            "m_Id": "ab6569d09ab04c9c944ed305a7d482b3"
+        }
+    ],
     "m_Nodes": [
         {
             "m_Id": "194da81a92b14bdb99667bd5c4e3e5e9"
@@ -642,10 +648,11 @@
         "serializedMesh": {
             "m_SerializedMesh": "{\"mesh\":{\"fileID\":2134273382279550537,\"guid\":\"6de0a1fe8862b4e41b706898416d5875\",\"type\":3}}",
             "m_Guid": ""
-        }
+        },
+        "preventRotation": false
     },
     "m_Path": "Shader Graphs",
-    "m_ConcretePrecision": 0,
+    "m_GraphPrecision": 0,
     "m_PreviewMode": 2,
     "m_OutputNode": {
         "m_Id": ""
@@ -1635,9 +1642,13 @@
         "m_GuidSerialized": "f2dadc8f-c8e2-4652-8b0e-4f6870c7a0f2"
     },
     "m_Name": "Base",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Texture2D_3fdb559480374c978ff71299f1bd3da2",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -1646,6 +1657,8 @@
         "m_SerializedTexture": "{\"texture\":{\"fileID\":2800000,\"guid\":\"6bf00b4fa40912742bc52c2dbfa356b6\",\"type\":3}}",
         "m_Guid": ""
     },
+    "isMainTexture": false,
+    "useTilingAndOffset": false,
     "m_Modifiable": true,
     "m_DefaultType": 0
 }
@@ -2129,17 +2142,23 @@
 }
 
 {
-    "m_SGVersion": 0,
+    "m_SGVersion": 1,
     "m_Type": "UnityEditor.Rendering.Universal.ShaderGraph.UniversalTarget",
     "m_ObjectId": "5e4e13039a744274ab7cff9a5f89b467",
     "m_ActiveSubTarget": {
         "m_Id": "a2e28cd184414198b587a4353cf98c3d"
     },
+    "m_AllowMaterialOverride": false,
     "m_SurfaceType": 0,
+    "m_ZTestMode": 4,
+    "m_ZWriteControl": 0,
     "m_AlphaMode": 0,
-    "m_TwoSided": false,
+    "m_RenderFace": 2,
     "m_AlphaClip": false,
-    "m_CustomEditorGUI": ""
+    "m_CastShadows": true,
+    "m_ReceiveShadows": true,
+    "m_CustomEditorGUI": "",
+    "m_SupportVFX": true
 }
 
 {
@@ -2895,7 +2914,8 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     },
-    "m_Space": 2
+    "m_Space": 0,
+    "m_PositionSource": 0
 }
 
 {
@@ -2950,7 +2970,8 @@
         "m_SerializableColors": []
     },
     "m_TextureType": 0,
-    "m_NormalMapSpace": 0
+    "m_NormalMapSpace": 0,
+    "m_EnableGlobalMipBias": true
 }
 
 {
@@ -3071,6 +3092,24 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.CategoryData",
+    "m_ObjectId": "ab6569d09ab04c9c944ed305a7d482b3",
+    "m_Name": "",
+    "m_ChildObjectList": [
+        {
+            "m_Id": "3fdb559480374c978ff71299f1bd3da2"
+        },
+        {
+            "m_Id": "b36b23264d654bb996513d949079b1d5"
+        },
+        {
+            "m_Id": "bd5b7a90d8344b4b8fd03ccb002e46da"
+        }
+    ]
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.AddNode",
     "m_ObjectId": "ad600420da4f47988a2093128bb2424f",
     "m_Group": {
@@ -3177,9 +3216,13 @@
         "m_GuidSerialized": "a59903c8-6794-414f-97c7-73f28d8c5fdc"
     },
     "m_Name": "FlapIntensity",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_b36b23264d654bb996513d949079b1d5",
     "m_OverrideReferenceName": "FlapIntensity",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
@@ -3508,9 +3551,13 @@
         "m_GuidSerialized": "ad4fcc48-84c2-4c41-bbf4-98bffe34917a"
     },
     "m_Name": "FlapSpeed",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Vector1_bd5b7a90d8344b4b8fd03ccb002e46da",
     "m_OverrideReferenceName": "FlapSpeed",
     "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
