@@ -4,17 +4,17 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Playables;
-using static UEventHandler;
+using Uevents;
 
 public class PlayerCutsceneManager : MonoBehaviour
 {
     public static PlayerCutsceneManager currentPlayerCutsceneManager;
-    public static UEvent OnIntroFinished = new UEvent();
-    public static UEvent OnIntroStarted = new UEvent();
-    public static UEvent OnEndingStarted = new UEvent();
-    public static UEvent OnEndingFadeIn = new UEvent();
+    public static Uevent OnIntroFinished = new Uevent();
+    public static Uevent OnIntroStarted = new Uevent();
+    public static Uevent OnEndingStarted = new Uevent();
+    public static Uevent OnEndingFadeIn = new Uevent();
 
-    public static UEvent OnCreditsStarted = new UEvent();
+    public static Uevent OnCreditsStarted = new Uevent();
     public static bool isIntroEnabled;
     public static bool isInCutscene;
 
@@ -24,7 +24,7 @@ public class PlayerCutsceneManager : MonoBehaviour
 
     public PlayableAsset introClip;
 
-    public UEventHandler eventHandler = new UEventHandler();
+    public UeventHandler eventHandler = new UeventHandler();
     private void Awake()
     {
         isIntroEnabled = playIntro;

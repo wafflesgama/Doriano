@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Uevents;
 
 [RequireComponent(typeof(Animator))]
 public class PlayerAnimationController : MonoBehaviour
@@ -33,7 +34,7 @@ public class PlayerAnimationController : MonoBehaviour
     float speedVal, lockXValue, lockYValue;
     int attackLvl = 0;
 
-    UEventHandler eventHandler = new UEventHandler();
+    UeventHandler eventHandler = new UeventHandler();
 
     void Start()
     {

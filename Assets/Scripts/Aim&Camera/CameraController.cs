@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using System.Threading.Tasks;
+using Uevents;
 
 public class CameraController : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class CameraController : MonoBehaviour
 
     Transform dialogueTarget;
     ViewType prevView = ViewType.Unset, currentView = ViewType.Unset;
-    UEventHandler eventHandler = new UEventHandler();
+    UeventHandler eventHandler = new UeventHandler();
 
     void Start()
     {

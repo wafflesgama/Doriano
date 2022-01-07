@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-
+using Uevents;
 public class StrechnSquach : MonoBehaviour
 {
     public float jumpStrechtAmount=1.2f;
@@ -13,7 +13,7 @@ public class StrechnSquach : MonoBehaviour
     public PlayerMovementController playerMovementController;
     Vector3 baseScale;
     Vector3 jumpStretchDirection=new Vector3();
-    UEventHandler eventHandler = new UEventHandler();
+    UeventHandler eventHandler = new UeventHandler();
 
     void Start()
     {

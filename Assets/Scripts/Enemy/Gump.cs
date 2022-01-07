@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.VFX;
-using static UEventHandler;
+using Uevents;
 
 public class Gump : MonoBehaviour
 {
@@ -16,9 +16,9 @@ public class Gump : MonoBehaviour
     public SkinnedMeshRenderer bodyRenderer;
     public SkinnedMeshRenderer maskRenderer;
     public MeshRenderer mask2Renderer;
-    public static UEvent OnGumpDied= new UEvent();
+    public static Uevent OnGumpDied= new Uevent();
 
-    private UEventHandler eventHandler = new UEventHandler();
+    private UeventHandler eventHandler = new UeventHandler();
 
     PlayerDetection playerDetection;
     Rigidbody body;

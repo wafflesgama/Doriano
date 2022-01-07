@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UEventHandler;
+using Uevents;
 
 [RequireComponent(typeof(PlayerInput))]
 public class InputManager : MonoBehaviour
@@ -25,8 +25,8 @@ public class InputManager : MonoBehaviour
         public TValue value { get; set; }
         //public event ClickAction Onpressed;
         //public event ClickAction Onreleased;
-        public UEvent Onpressed= new UEvent();
-        public UEvent Onreleased= new UEvent();
+        public Uevent Onpressed= new Uevent();
+        public Uevent Onreleased= new Uevent();
 
         public void Pressed() => Onpressed.TryInvoke();
         //public void Pressed() => Onpressed?.Invoke();

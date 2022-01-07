@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
-using static UEventHandler;
+using Uevents;
 
 public delegate void MovementAction();
 
@@ -48,11 +48,11 @@ public class PlayerMovementController : MonoBehaviour
     public Vector3 upLeanedVector { get; private set; }
     public Vector3 playerHorizontalVelocity { get; private set; }
     public bool isInLockState { get; private set; }
-    public UEventHandler eventHandler = new UEventHandler();
+    public UeventHandler eventHandler = new UeventHandler();
 
-    public UEvent OnJumped = new UEvent();
-    public UEvent OnLanded = new UEvent();
-    public UEvent OnFalling = new UEvent();
+    public Uevent OnJumped = new Uevent();
+    public Uevent OnLanded = new Uevent();
+    public Uevent OnFalling = new Uevent();
 
     //public event MovementAction onJumped;
     //public event MovementAction onLanded;

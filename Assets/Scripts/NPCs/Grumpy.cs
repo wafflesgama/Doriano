@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using Uevents;
 
 public class Grumpy : MonoBehaviour, Interactable
 {
@@ -31,7 +32,7 @@ public class Grumpy : MonoBehaviour, Interactable
     Transform playerRef;
     Plane wallPlane;
 
-    UEventHandler eventHandler = new UEventHandler();
+    UeventHandler eventHandler = new UeventHandler();
     public Vector3 GetOffset() => messageOffset;
 
     private void Awake()

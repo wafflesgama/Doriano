@@ -6,13 +6,13 @@ using DG.Tweening;
 using System.Threading.Tasks;
 using TMPro;
 using System;
-using static UEventHandler;
+using  Uevents;
 
 public class UIManager : MonoBehaviour
 {
-    public static UEvent<Transform, string[]> OnStartedDialogue = new UEvent<Transform, string[]>();
-    public static UEvent OnFinishedDialogue = new UEvent();
-    public static UEvent<bool> OnFadeScreen = new UEvent<bool>();
+    public static Uevent<Transform, string[]> OnStartedDialogue = new Uevent<Transform, string[]>();
+    public static Uevent OnFinishedDialogue = new Uevent();
+    public static Uevent<bool> OnFadeScreen = new Uevent<bool>();
 
     public AimController aimController;
     public InputManager inputManager;
@@ -61,7 +61,7 @@ public class UIManager : MonoBehaviour
     public string[] creditsMessage;
     public CanvasGroup creditsGroup;
 
-    public UEventHandler eventHandler = new UEventHandler();
+    public UeventHandler eventHandler = new UeventHandler();
     int lockArrowShowing = -1;
     bool isInDialogue;
     int gumpShowCounter = 0;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using Uevents;
 
 public class Sailor : MonoBehaviour, Interactable
 {
@@ -16,7 +17,7 @@ public class Sailor : MonoBehaviour, Interactable
 
     bool hasMadeIntro;
 
-    UEventHandler eventHandler = new UEventHandler();
+    UeventHandler eventHandler = new UeventHandler();
     void Start()
     {
         UIManager.OnFinishedDialogue.Subscribe(eventHandler, FinishedDialogue);

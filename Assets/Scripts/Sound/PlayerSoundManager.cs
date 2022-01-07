@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Uevents;
 
 [RequireComponent(typeof(AudioSource))]
 public class PlayerSoundManager : MonoBehaviour
@@ -48,7 +49,7 @@ public class PlayerSoundManager : MonoBehaviour
     int typeSkipCounter = 0;
     float mainSourceVol;
     float[] externalSourcesVol;
-    UEventHandler eventHandler = new UEventHandler();
+    UeventHandler eventHandler = new UeventHandler();
 
     private void Awake()
     {

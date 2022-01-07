@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UEventHandler;
+using Uevents;
 
 //public delegate void AttackAction(int lvl, bool isRestoringCombo);
 
@@ -14,7 +14,7 @@ public class AttackController : MonoBehaviour
     [SerializeField] public float ComboRestoreTime;
     [SerializeField] public bool canRestoreCombo;
 
-    public  UEvent<int,bool> OnAttack= new UEvent<int, bool>();
+    public  Uevent<int,bool> OnAttack= new Uevent<int, bool>();
     public int ComboIndex { get; private set; }
 
     public bool IsAttacking { get; set; }
@@ -22,7 +22,7 @@ public class AttackController : MonoBehaviour
     public void ResetComboIndex() => ComboIndex = 0;
     public void IncrementComboIndex() => ComboIndex = ComboIndex >= ComboSize ? 1 : ComboIndex + 1;
 
-    UEventHandler eventHandler = new UEventHandler();
+    UeventHandler eventHandler = new UeventHandler();
 
     // [HideInInspector]
     [Header("Exposed Variables")]

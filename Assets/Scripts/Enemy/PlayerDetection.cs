@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UEventHandler;
+using Uevents;
 
 public class PlayerDetection : MonoBehaviour
 {
@@ -9,7 +9,7 @@ public class PlayerDetection : MonoBehaviour
     public delegate void PlayerNearby(bool isNear);
 
     //public event PlayerNearby OnPlayerNearby;
-    public UEvent<bool> OnPlayerNearby= new UEvent<bool>();
+    public Uevent<bool> OnPlayerNearby= new Uevent<bool>();
 
     private void OnTriggerEnter(Collider other)
     {

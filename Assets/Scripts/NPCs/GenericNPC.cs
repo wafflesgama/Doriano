@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using Uevents;
 
 public class GenericNPC : MonoBehaviour,Interactable
 {
     public Vector3 offset;
     [Multiline] public string[] dialogue;
 
-    UEventHandler eventHandler = new UEventHandler();
+    UeventHandler eventHandler = new UeventHandler();
     void Start()
     {
         UIManager.OnFinishedDialogue.Subscribe(eventHandler, FinishedDialogue);

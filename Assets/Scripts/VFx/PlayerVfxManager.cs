@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.VFX;
+using Uevents;
 
 public class PlayerVfxManager : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class PlayerVfxManager : MonoBehaviour
     float rate;
     bool followedByJump, isLanding;
 
-    UEventHandler eventHandler = new UEventHandler();
+    UeventHandler eventHandler = new UeventHandler();
 
     private void Awake()
     {

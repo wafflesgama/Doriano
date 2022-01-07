@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Playables;
+using Uevents;
 
 public class ExternalCutsceneManager : MonoBehaviour
 {
     public PlayableDirector endingDirector;
-    UEventHandler eventHandler = new UEventHandler();
+    UeventHandler eventHandler = new UeventHandler();
     void Start()
     {
         PlayerCutsceneManager.OnEndingStarted.Subscribe(eventHandler, StartEnding);

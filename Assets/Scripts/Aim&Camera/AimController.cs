@@ -1,16 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UEventHandler;
+using Uevents;
 
 //public delegate void ChangeView();
 
 public class AimController : MonoBehaviour
 {
 
-    public UEvent OnLockTarget = new UEvent();
+    public Uevent OnLockTarget = new Uevent();
     //public event ChangeView OnLockTarget;
-    public UEvent OnUnlockTarget = new UEvent();
+    public Uevent OnUnlockTarget = new Uevent();
     //public event ChangeView OnUnlockTarget;
     public InputManager inputManager;
     public ObjectLockController lockController;
@@ -23,7 +23,7 @@ public class AimController : MonoBehaviour
 
     [Header("Exposed Variables")]
     public LockableObject currentLockedObj;
-    public UEventHandler eventHandler = new UEventHandler();
+    public UeventHandler eventHandler = new UeventHandler();
 
     bool isAimFrozen,pausedState;
 

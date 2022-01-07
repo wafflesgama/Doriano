@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.VFX;
-
+using Uevents;
 public class WalkingParticles : MonoBehaviour
 {
     public PlayerMovementController movementController;
@@ -11,7 +11,7 @@ public class WalkingParticles : MonoBehaviour
     public float particleRate = 10;
     VisualEffect visualEffect;
 
-    public UEventHandler eventHandler = new UEventHandler();
+    public UeventHandler eventHandler = new UeventHandler();
 
     float rate;
     bool followedByJump, isLanding;

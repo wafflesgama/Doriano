@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using System;
-using static UEventHandler;
+using Uevents;
 
 public class PauseHandler : MonoBehaviour
 {
     public InputManager inputManager;
     //public static Action OnPause;
     //public static Action OnUnpause;
-    public static UEvent OnPause= new UEvent();
-    public static UEvent OnUnpause= new UEvent();
+    public static Uevent OnPause= new Uevent();
+    public static Uevent OnUnpause= new Uevent();
 
     bool isInPause;
 
-    UEventHandler eventHandler = new UEventHandler();
+    UeventHandler eventHandler = new UeventHandler();
 
     private void Awake()
     {

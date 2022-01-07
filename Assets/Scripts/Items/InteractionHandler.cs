@@ -2,20 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UEventHandler;
-
+using Uevents;
 public class InteractionHandler : MonoBehaviour
 {
 
-    public static UEvent<Transform, Vector3> OnInteractableAppeared = new UEvent<Transform, Vector3>();
-    public static UEvent OnInteractableDisappeared = new UEvent();
-    public static UEvent<Vector3> OnSplash = new UEvent<Vector3>();
+    public static Uevent<Transform, Vector3> OnInteractableAppeared = new Uevent<Transform, Vector3>();
+    public static Uevent OnInteractableDisappeared = new Uevent();
+    public static Uevent<Vector3> OnSplash = new Uevent<Vector3>();
     static GameObject objectToInteract = null;
 
     public InputManager inputManager;
 
 
-    UEventHandler eventHandler = new UEventHandler();
+    UeventHandler eventHandler = new UeventHandler();
 
     private void Start()
     {

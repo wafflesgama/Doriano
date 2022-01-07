@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using static UEventHandler;
+using Uevents;
 
 public class PlayerDamageHandler : MonoBehaviour
 {
     public delegate void HitAction(Vector3 source);
-    public static UEvent<Vector3> OnHit = new UEvent<Vector3>();
+    public static Uevent<Vector3> OnHit = new Uevent<Vector3>();
 
     public AttackController attackController;
     public Collider damageZoneTrigger;
     public int activationDelayMs = 300;
 
-    UEventHandler eventHandler = new UEventHandler();
+    UeventHandler eventHandler = new UeventHandler();
     void Start()
     {
         attackController.OnAttack.Subscribe(eventHandler, AttackController_OnAttack);

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
-using static UEventHandler;
+using Uevents;
 
 [Serializable]
 public struct Item
@@ -25,8 +25,8 @@ public class Chest : MonoBehaviour, Interactable
     public Collider lidCollider;
 
 
-    public static UEvent OnChestOpened= new UEvent();
-    public static UEvent<Sprite,string,string> OnChestItemShow= new UEvent<Sprite, string, string>();
+    public static Uevent OnChestOpened= new Uevent();
+    public static Uevent<Sprite,string,string> OnChestItemShow= new Uevent<Sprite, string, string>();
 
     PlayableDirector director;
 

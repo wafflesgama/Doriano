@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
+using Uevents;
 public class PlayerWeaponsController : MonoBehaviour
 {
 
@@ -18,7 +18,7 @@ public class PlayerWeaponsController : MonoBehaviour
     [SerializeField] private List<WeaponEntry> weaponsInSlot;
     WeaponEntry? weaponInHand;
 
-    UEventHandler eventHandler = new UEventHandler();
+    UeventHandler eventHandler = new UeventHandler();
     void Start()
     {
         inputManager.input_equipWeapon.Onpressed.Subscribe(eventHandler,EquipWeapon);

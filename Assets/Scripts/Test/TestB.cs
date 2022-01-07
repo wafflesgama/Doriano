@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Uevents;
 
 public class TestB : MonoBehaviour
 {
-    public UEventHandler eventHandler=new UEventHandler();
+    public UeventHandler eventHandler=new UeventHandler();
 
     TestA a;
     // Start is called before the first frame update

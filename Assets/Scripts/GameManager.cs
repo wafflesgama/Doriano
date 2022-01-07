@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UEventHandler;
+using Uevents;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager currentGameManager;
-    public static UEvent OnExitScreen = new UEvent();
-    public static UEvent OnPlayerReset = new UEvent();
+    public static Uevent OnExitScreen = new Uevent();
+    public static Uevent OnPlayerReset = new Uevent();
 
     public int resetFreezeDurationMs = 800;
 
@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     public int gumpKilled=0;
     bool restarFlag;
 
-    public UEventHandler eventHandler = new UEventHandler(); 
+    public UeventHandler eventHandler = new UeventHandler(); 
 
     private void Awake()
     {

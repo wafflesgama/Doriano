@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UEventHandler;
+using Uevents;
 
 public class TestA : MonoBehaviour
 {
     //public EventManager eventManager= new EventManager();
-    public UEvent OnSpaceEnter=new UEvent();
+    public Uevent OnSpaceEnter=new Uevent();
     void Start()
     {
-        //OnSpaceEnter=new UEvent(ref eventManager);
+        //OnSpaceEnter=new Uevent(ref eventManager);
     }
 
     // Update is called once per frame
